@@ -1,0 +1,20 @@
+// ═══════════════════════════════════════════════════════════
+// NEXUS — Firebase Firestore Security Rules
+// Paste these in Firebase Console → Firestore → Rules
+// ═══════════════════════════════════════════════════════════
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Items collection — the entire folder/file tree
+    match /items/{itemId} {
+      // Anyone logged in can READ
+      allow read: if request.auth != null;
+
+      // Only admin can WRITE
+      allow write: if request.auth != null
+                   && request.auth.token.email == "aaravhfs@gmail.com";
+    }
+  }
+}
