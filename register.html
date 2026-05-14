@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Register — Nexus</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%231a0e2e'/%3E%3Ctext x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-size='26' font-family='serif'%3E✦%3C/text%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;font-size:16px}
+body{
+  min-height:100%;
+  font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:#0d0a1a;color:#f0ecff;
+  display:flex;align-items:flex-start;justify-content:center;
+  padding:28px 20px 56px;position:relative;overflow-x:hidden;
+}
+/* BG */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 15% 5%,rgba(100,60,180,.32),transparent 55%),radial-gradient(ellipse 60% 50% at 88% 95%,rgba(40,100,120,.24),transparent 50%),radial-gradient(ellipse 40% 35% at 50% 50%,rgba(232,201,107,.05),transparent 65%)}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);animation:of 22s ease-in-out infinite}
+.o1{width:480px;height:480px;background:rgba(110,65,220,.2);top:-12%;left:-8%;animation-delay:0s}
+.o2{width:360px;height:360px;background:rgba(232,201,107,.1);bottom:5%;right:-5%;animation-delay:-9s}
+.o3{width:250px;height:250px;background:rgba(78,205,196,.09);top:40%;right:20%;animation-delay:-17s}
+@keyframes of{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(18px,-14px) scale(1.04)}66%{transform:translate(-12px,18px) scale(.97)}}
+/* CARD */
+.card{
+  position:relative;z-index:1;width:100%;max-width:500px;
+  background:linear-gradient(160deg,rgba(28,23,52,.97),rgba(18,14,32,.99));
+  border:1px solid rgba(232,201,107,.2);border-radius:28px;
+  padding:52px 44px 44px;
+  box-shadow:0 24px 64px rgba(0,0,0,.72),0 0 0 1px rgba(232,201,107,.06),inset 0 1px 0 rgba(255,255,255,.07);
+  animation:rise .7s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes rise{from{opacity:0;transform:translateY(32px) scale(.96)}to{opacity:1;transform:none}}
+/* HEADER */
+.header{text-align:center;margin-bottom:30px}
+.star{font-size:2.8rem;line-height:1;margin-bottom:12px;display:block;filter:drop-shadow(0 0 20px rgba(232,201,107,.6));animation:sp 3.2s ease-in-out infinite}
+@keyframes sp{0%,100%{filter:drop-shadow(0 0 16px rgba(232,201,107,.5))}50%{filter:drop-shadow(0 0 36px rgba(232,201,107,.9))}}
+.title{font-family:'Cormorant Garamond',Georgia,serif;font-size:2.6rem;font-weight:700;background:linear-gradient(140deg,#f0ecff 10%,#e8c96b 65%,#f5dfa0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px}
+.eyebrow{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(232,201,107,.6);margin-bottom:6px;display:block}
+.subtitle{font-size:.87rem;color:rgba(200,194,224,.6);line-height:1.6}
+.subtitle .note{display:block;margin-top:5px;font-size:.76rem;color:rgba(74,70,104,.9)}
+/* STEPS */
+.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px}
+.step{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.step-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;transition:all .3s;border:2px solid rgba(255,255,255,.1);color:rgba(74,70,104,.8);background:transparent}
+.step.active .step-dot{background:#e8c96b;color:#0d0a1a;border-color:#e8c96b;box-shadow:0 0 0 4px rgba(232,201,107,.2)}
+.step.done .step-dot{background:rgba(123,198,126,.18);color:#7bc67e;border-color:rgba(123,198,126,.4)}
+.step-lbl{font-size:.65rem;color:rgba(132,127,160,.55);white-space:nowrap}
+.step.active .step-lbl{color:#e8c96b}
+.step.done .step-lbl{color:rgba(123,198,126,.75)}
+.step-line{flex:0 0 28px;height:1.5px;background:rgba(255,255,255,.08);margin-bottom:20px}
+/* SCREENS */
+.screen{display:none;flex-direction:column;gap:18px;animation:sfade .35s ease both}
+.screen.on{display:flex}
+@keyframes sfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* GOOGLE BTN */
+.btn-google{
+  width:100%;padding:17px 22px;
+  display:flex;align-items:center;justify-content:center;gap:13px;
+  background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);border-radius:14px;
+  color:#f0ecff;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;
+  cursor:pointer;letter-spacing:.01em;
+  transition:background .22s,border-color .22s,box-shadow .22s,transform .18s;
+  -webkit-tap-highlight-color:transparent;user-select:none;
+}
+.btn-google:hover,.btn-google:focus{background:rgba(232,201,107,.12);border-color:rgba(232,201,107,.38);box-shadow:0 10px 32px rgba(232,201,107,.2);transform:translateY(-2px);outline:none}
+.btn-google:active{transform:translateY(0)}
+.btn-google:disabled{opacity:.38;cursor:not-allowed;transform:none;box-shadow:none}
+/* FIELD */
+.field{display:flex;flex-direction:column;gap:6px}
+.field-label{font-size:.72rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:rgba(132,127,160,.9)}
+.field-input,.field-textarea,.field-select{
+  width:100%;padding:13px 16px;
+  background:rgba(255,255,255,.045);border:1.5px solid rgba(255,255,255,.1);border-radius:11px;
+  color:#f0ecff;font-family:'DM Sans',sans-serif;font-size:1rem;
+  transition:border-color .2s,background .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.field-input:focus,.field-textarea:focus,.field-select:focus{outline:none;border-color:rgba(232,201,107,.5);background:rgba(232,201,107,.06);box-shadow:0 0 0 3px rgba(232,201,107,.1)}
+.field-input::placeholder,.field-textarea::placeholder{color:rgba(74,70,104,.8)}
+.field-input:-webkit-autofill{-webkit-box-shadow:0 0 0 100px rgba(28,23,52,.97) inset;-webkit-text-fill-color:#f0ecff;border-color:rgba(232,201,107,.35)}
+.field-select option{background:#140f22;color:#f0ecff}
+.field-textarea{resize:vertical;min-height:80px;line-height:1.55}
+.field-hint{font-size:.69rem;color:rgba(74,70,104,.85);margin-top:3px;line-height:1.4}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+/* SUBJECT GRID */
+.subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:220px;overflow-y:auto;padding:2px}
+.subj-grid::-webkit-scrollbar{width:3px}
+.subj-grid::-webkit-scrollbar-thumb{background:rgba(232,201,107,.2);border-radius:99px}
+.subj-opt{
+  display:flex;align-items:center;gap:9px;
+  padding:11px 13px;border-radius:11px;
+  border:1.5px solid rgba(255,255,255,.08);
+  cursor:pointer;transition:all .18s;background:rgba(255,255,255,.02);
+  user-select:none;-webkit-tap-highlight-color:transparent;
+}
+.subj-opt:hover{border-color:rgba(232,201,107,.28);background:rgba(232,201,107,.06)}
+.subj-opt.sel{border-color:rgba(232,201,107,.45);background:rgba(232,201,107,.1)}
+.subj-check{width:18px;height:18px;border-radius:5px;flex-shrink:0;border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:.72rem;transition:all .15s;color:transparent}
+.subj-opt.sel .subj-check{background:#e8c96b;border-color:#e8c96b;color:#0d0a1a}
+.subj-name{font-size:.84rem;color:rgba(200,194,224,.9);line-height:1.3}
+/* USER INFO BANNER */
+.user-banner{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;border-radius:12px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
+}
+.user-banner img,.user-av-init{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid rgba(232,201,107,.3)}
+.user-av-init{background:rgba(232,201,107,.15);color:#e8c96b;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.user-banner-info{flex:1;min-width:0}
+.user-banner-name{font-size:.9rem;font-weight:600;color:#f0ecff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-banner-email{font-size:.72rem;color:rgba(132,127,160,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* SUMMARY BOX */
+.summary-box{padding:14px 16px;border-radius:11px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);font-size:.84rem;color:rgba(200,194,224,.85);line-height:1.85}
+.summary-box div b{color:rgba(132,127,160,.7);font-weight:600}
+/* BUTTONS */
+.btn-row{display:flex;gap:10px;margin-top:2px}
+.btn-primary{
+  flex:1;padding:14px 20px;border-radius:12px;border:none;
+  background:#e8c96b;color:#0d0a1a;
+  font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;
+  cursor:pointer;transition:background .2s,box-shadow .2s,transform .18s;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-primary:hover{background:#f5dfa0;box-shadow:0 8px 28px rgba(232,201,107,.35);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{opacity:.38;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-back{padding:14px 18px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:rgba(200,194,224,.8);font-family:'DM Sans',sans-serif;font-size:.96rem;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-back:hover{background:rgba(255,255,255,.1);color:#f0ecff}
+.btn-link{font-size:.82rem;color:rgba(232,201,107,.8);background:none;border:none;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;padding:4px 0;transition:color .18s;text-align:center}
+.btn-link:hover{color:#e8c96b}
+/* ERROR */
+.err{font-size:.76rem;color:#ff7b7b;min-height:18px}
+/* SUCCESS */
+.success{display:none;flex-direction:column;align-items:center;text-align:center;padding:16px 0}
+.success.on{display:flex}
+.success-ic{font-size:3.2rem;margin-bottom:16px;filter:drop-shadow(0 0 18px rgba(123,198,126,.5));animation:pop .6s cubic-bezier(.16,1,.3,1) both}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:#f0ecff;margin-bottom:8px}
+.success-body{font-size:.86rem;color:rgba(200,194,224,.7);line-height:1.65;margin-bottom:24px;max-width:340px}
+.btn-goto{display:inline-block;padding:13px 28px;border-radius:12px;background:rgba(232,201,107,.15);border:1.5px solid rgba(232,201,107,.3);color:#e8c96b;font-family:'DM Sans',sans-serif;font-size:.96rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-goto:hover{background:rgba(232,201,107,.25);box-shadow:0 8px 24px rgba(232,201,107,.2);transform:translateY(-1px)}
+/* LINKS */
+.links{text-align:center;margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.link-line{font-size:.8rem;color:rgba(132,127,160,.7)}
+.link-line a{color:#e8c96b;text-decoration:none;font-weight:500}
+.link-line a:hover{color:#f5dfa0}
+/* CREDITS */
+.credits{text-align:center;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);font-size:.67rem;color:rgba(74,70,104,.7);letter-spacing:.04em}
+.credits b{color:rgba(232,201,107,.5)}
+/* SPINNER */
+.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(13,10,26,.25);border-top-color:#0d0a1a;animation:spin .7s linear infinite;flex-shrink:0}
+.spin-w{border:2.5px solid rgba(240,236,255,.2);border-top-color:#f0ecff}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);z-index:999;background:rgba(26,21,48,.97);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 22px;font-size:.84rem;color:#f0ecff;box-shadow:0 20px 60px rgba(0,0,0,.7);transition:transform .32s cubic-bezier(.16,1,.3,1),opacity .32s;opacity:0;pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.ok{border-color:rgba(123,198,126,.35);color:#7bc67e}
+.toast.err{border-color:rgba(255,123,123,.35);color:#ff7b7b}
+/* MOBILE */
+@media(max-width:520px){
+  body{padding:20px 14px 48px}
+  .card{padding:40px 20px 34px;border-radius:22px}
+  .title{font-size:2.2rem}
+  .two-col{grid-template-columns:1fr}
+  .subj-grid{grid-template-columns:1fr}
+  .step-lbl{font-size:.6rem}
+}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="o1 orb"></div><div class="o2 orb"></div><div class="o3 orb"></div>
+</div>
+
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="star">✦</span>
+    <span class="eyebrow">Teacher Registration</span>
+    <div class="title">Join Nexus</div>
+    <p class="subtitle">
+      Register with your Google account to get started.
+      <span class="note">⏳ Admin reviews your request before your account activates.</span>
+    </p>
+  </div>
+
+  <!-- STEPS -->
+  <div class="steps" id="steps">
+    <div class="step active" id="s1">
+      <div class="step-dot">1</div>
+      <div class="step-lbl">Sign In</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="s2">
+      <div class="step-dot">2</div>
+      <div class="step-lbl">Subjects</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="s3">
+      <div class="step-dot">3</div>
+      <div class="step-lbl">Submit</div>
+    </div>
+  </div>
+
+  <!-- SCREEN 1: Google Auth -->
+  <div class="screen on" id="sc1">
+    <div style="padding:16px 18px;border-radius:13px;background:rgba(232,201,107,.07);border:1px solid rgba(232,201,107,.16);font-size:.84rem;color:rgba(200,194,224,.85);line-height:1.6;text-align:center">
+      ✦ Use your <strong style="color:#e8c96b">Google account</strong> to register. Your profile name and email will be used automatically.
+    </div>
+    <button class="btn-google" id="btn-google" type="button">
+      <svg width="22" height="22" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      Sign in with Google to continue
+    </button>
+    <div class="err" id="err1"></div>
+    <div class="links">
+      <div class="link-line">Already registered? <a href="login.html">Sign in here</a></div>
+      <div class="link-line"><a href="index.html">← Back to home</a></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Subject Selection -->
+  <div class="screen" id="sc2">
+    <div class="user-banner" id="user-banner">
+      <div class="user-av-init" id="av-init">?</div>
+      <div class="user-banner-info">
+        <div class="user-banner-name" id="banner-name">—</div>
+        <div class="user-banner-email" id="banner-email">—</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Which subjects do you teach? *</label>
+      <div class="subj-grid" id="subj-grid">
+        <div style="color:rgba(132,127,160,.6);font-size:.82rem;padding:8px;display:flex;align-items:center;gap:8px;grid-column:1/-1">
+          <div class="spin spin-w" style="width:15px;height:15px;border-width:2px"></div> Loading subjects…
+        </div>
+      </div>
+      <span class="field-hint">Select all subjects you teach. You can only access your assigned subjects.</span>
+    </div>
+
+    <div class="err" id="err2"></div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="backToStep1()">← Back</button>
+      <button class="btn-primary" id="btn-next2" onclick="goToStep3()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: Note + Submit -->
+  <div class="screen" id="sc3">
+    <div class="summary-box" id="summary-box"></div>
+
+    <div class="field">
+      <label class="field-label">Note to Admin <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.72rem;opacity:.5">(optional)</span></label>
+      <textarea class="field-textarea" id="r-note" placeholder="e.g. I teach English for Classes 11 & 12 ISC. Please approve my access." autocorrect="off"></textarea>
+    </div>
+
+    <div class="err" id="err3"></div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="backToStep2()">← Back</button>
+      <button class="btn-primary" id="btn-submit" onclick="submitRegistration()">Submit Request</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success" id="success">
+    <div class="success-ic">✅</div>
+    <div class="success-title">Request Sent!</div>
+    <p class="success-body">Your registration has been submitted. The admin will review and approve your account. You can sign in once it's approved.</p>
+    <a href="login.html" class="btn-goto">Go to Sign In →</a>
+  </div>
+
+  <div class="credits">Developed by <b>Aarav Sinha</b> · Nexus Study Portal</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+/* ════════════════════════════════════
+   NEXUS REGISTER · by Aarav Sinha
+════════════════════════════════════ */
+const FC={apiKey:"AIzaSyCqEEBANVyt-ybQD8z-pys2V-07-lxEWjA",authDomain:"nexus-705ef.firebaseapp.com",projectId:"nexus-705ef",storageBucket:"nexus-705ef.firebasestorage.app",messagingSenderId:"982944171585",appId:"1:982944171585:web:de65b6827ca769565ba8c0"};
+const ADMIN="aaravhfs@gmail.com";
+if(!firebase.apps.length)firebase.initializeApp(FC);
+const auth=firebase.auth(),db=firebase.firestore();
+const toastEl=document.getElementById('toast');
+const btnGoogle=document.getElementById('btn-google');
+
+let googleUser=null;         // Firebase auth user after Google sign-in
+let selectedSubjects=[];     // subject IDs chosen
+let allSubjects=[];          // all loaded subjects
+
+/* ── HELPERS ── */
+function showToast(m,t){toastEl.textContent=m;toastEl.className='toast show'+(t==='ok'?' ok':t==='err'?' err':'');clearTimeout(window._tt);window._tt=setTimeout(()=>toastEl.classList.remove('show'),3600);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function setGBtnLoad(on){
+  btnGoogle.disabled=on;
+  btnGoogle.innerHTML=on
+    ?'<div class="spin spin-w" style="width:18px;height:18px;border-width:2.5px"></div> Connecting…'
+    :'<svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Sign in with Google to continue';
+}
+
+/* ── STEP HELPERS ── */
+function showScreen(n){
+  ['sc1','sc2','sc3'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  document.getElementById('sc'+n).classList.add('on');
+  ['s1','s2','s3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.classList.remove('active','done');
+    if(i+1===n)el.classList.add('active');
+    if(i+1<n)el.classList.add('done');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── If already logged in, check registration status ── */
+auth.onAuthStateChanged(async u=>{
+  if(!u)return;
+  if(u.email===ADMIN){window.location.href='admin.html';return;}
+  // Check if user already has a profile
+  try{
+    const snap=await db.collection('users').doc(u.uid).get();
+    if(snap.exists){
+      const d=snap.data();
+      if(d.status==='approved'){window.location.href='user.html';return;}
+      if(d.status==='pending'){await auth.signOut();window.location.href='login.html?msg=pending';return;}
+      if(d.status==='rejected'){await auth.signOut();window.location.href='login.html?msg=rejected';return;}
+    }
+  }catch(e){}
+  // User signed in with Google but no profile yet — continue to step 2
+  googleUser=u;
+  afterGoogleSignIn(u);
+});
+
+/* ── STEP 1: Google Sign In ── */
+btnGoogle.addEventListener('click',async()=>{
+  document.getElementById('err1').textContent='';
+  setGBtnLoad(true);
+  try{
+    const provider=new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({prompt:'select_account'});
+    await auth.signInWithPopup(provider);
+    // onAuthStateChanged handles the rest
+  }catch(e){
+    let m='Sign in failed. Please try again.';
+    if(e.code==='auth/popup-closed-by-user')m='Sign in cancelled.';
+    if(e.code==='auth/popup-blocked')m='Popup blocked — please allow popups.';
+    document.getElementById('err1').textContent=m;
+    setGBtnLoad(false);
+  }
+});
+
+function afterGoogleSignIn(u){
+  // Populate user banner
+  const name=u.displayName||u.email||'User';
+  const email=u.email||'';
+  const photo=u.photoURL||'';
+  document.getElementById('banner-name').textContent=name;
+  document.getElementById('banner-email').textContent=email;
+  if(photo){
+    const img=document.createElement('img');
+    img.src=photo;img.alt=name;img.style.cssText='width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1.5px solid rgba(232,201,107,.3)';
+    const banner=document.getElementById('user-banner');
+    banner.replaceChild(img,document.getElementById('av-init'));
+  } else {
+    document.getElementById('av-init').textContent=name.charAt(0).toUpperCase();
+  }
+  loadSubjects();
+  showScreen(2);
+}
+
+/* ── Load subjects from Firestore (public read — no auth needed per rules) ── */
+async function loadSubjects(){
+  const grid=document.getElementById('subj-grid');
+  try{
+    // subjects collection is readable without auth (per firestore.rules: allow read: if true)
+    const snap=await db.collection('subjects').orderBy('order').get();
+    if(snap.empty){
+      grid.innerHTML='<div style="color:rgba(132,127,160,.65);font-size:.82rem;padding:8px;grid-column:1/-1">No subjects have been set up yet. Contact admin.</div>';
+      return;
+    }
+    allSubjects=[];
+    snap.forEach(d=>allSubjects.push({id:d.id,...d.data()}));
+    grid.innerHTML='';
+    allSubjects.forEach(s=>{
+      const el=document.createElement('div');
+      el.className='subj-opt';
+      el.innerHTML=`<div class="subj-check">✓</div><span class="subj-name">${esc(s.emoji||'')} ${esc(s.name)}</span>`;
+      el.addEventListener('click',()=>{
+        const isSel=el.classList.toggle('sel');
+        if(isSel){if(!selectedSubjects.includes(s.id))selectedSubjects.push(s.id);}
+        else selectedSubjects=selectedSubjects.filter(x=>x!==s.id);
+      });
+      // Touch support
+      el.addEventListener('touchend',e=>{e.preventDefault();el.click();});
+      grid.appendChild(el);
+    });
+  }catch(e){
+    grid.innerHTML=`<div style="color:#ff7b7b;font-size:.82rem;padding:8px;grid-column:1/-1">Could not load subjects: ${esc(e.message)}</div>`;
+    console.error('loadSubjects error:',e);
+  }
+}
+
+/* ── STEP 2 → 3 ── */
+function goToStep3(){
+  document.getElementById('err2').textContent='';
+  if(selectedSubjects.length===0){document.getElementById('err2').textContent='Please select at least one subject.';return;}
+  // Build summary
+  const name=googleUser?.displayName||googleUser?.email||'—';
+  const email=googleUser?.email||'—';
+  const subjNames=selectedSubjects.map(id=>{const s=allSubjects.find(x=>x.id===id);return s?(s.emoji?s.emoji+' ':'')+s.name:id;}).join(', ');
+  document.getElementById('summary-box').innerHTML=
+    `<div><b>Name:</b> ${esc(name)}</div><div><b>Email:</b> ${esc(email)}</div><div><b>Subjects:</b> ${esc(subjNames)}</div>`;
+  showScreen(3);
+}
+
+/* ── STEP 3: Submit ── */
+async function submitRegistration(){
+  document.getElementById('err3').textContent='';
+  if(!googleUser){showToast('Session expired. Please start over.','err');showScreen(1);return;}
+  const note=document.getElementById('r-note').value.trim();
+  const btn=document.getElementById('btn-submit');
+  btn.innerHTML='<div class="spin"></div> Submitting…';btn.disabled=true;
+  try{
+    // Save user document to Firestore — status: pending
+    await db.collection('users').doc(googleUser.uid).set({
+      uid:googleUser.uid,
+      email:googleUser.email||'',
+      displayName:googleUser.displayName||googleUser.email||'',
+      photoURL:googleUser.photoURL||'',
+      role:'teacher',
+      status:'pending',
+      subjects:selectedSubjects,
+      note,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+      lastLogin:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    // Sign out — must wait for admin approval
+    await auth.signOut();
+    // Show success
+    document.getElementById('steps').style.display='none';
+    showScreen(99); // hide all screens
+    ['sc1','sc2','sc3'].forEach(id=>document.getElementById(id).classList.remove('on'));
+    document.getElementById('success').classList.add('on');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){
+    let m='Submission failed. Please try again.';
+    if(e.code==='permission-denied'||e.message.includes('Missing or insufficient permissions'))
+      m='Permission error — the Firestore rules may not be published yet. See firestore.rules file.';
+    document.getElementById('err3').textContent=m;
+    btn.innerHTML='Submit Request';btn.disabled=false;
+    console.error('submitRegistration error:',e);
+  }
+}
+
+/* ── BACK BUTTONS ── */
+function backToStep1(){
+  // Sign out Google so user can choose again
+  auth.signOut().catch(()=>{});
+  googleUser=null;selectedSubjects=[];
+  setGBtnLoad(false);
+  showScreen(1);
+}
+function backToStep2(){showScreen(2);}
+
+/* ── GLOBALS ── */
+window.goToStep3=goToStep3;window.backToStep1=backToStep1;window.backToStep2=backToStep2;window.submitRegistration=submitRegistration;
+</script>
+</body>
+</html>

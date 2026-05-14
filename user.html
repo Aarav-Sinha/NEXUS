@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>Nexus — Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%230c0919'/%3E%3Cpolygon points='24,8 40,36 8,36' fill='none' stroke='%23c9a84c' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+body{overflow:hidden;height:100vh}
+.app{display:flex;height:100vh;position:relative;z-index:1}
+</style>
+</head>
+<body>
+<div class="bg"><div class="bg-grid"></div></div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sb" id="sb">
+    <div class="sb-head">
+      <div class="sb-logo">
+        <div class="sb-logo-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linejoin="round"><polygon points="12,2 22,20 2,20"/></svg></div>
+        <span class="sb-logo-text">Nexus</span>
+      </div>
+      <button class="sb-x ib" id="sb-x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <nav class="sb-nav" id="sb-nav">
+      <span class="sb-label">Navigation</span>
+      <button class="sbi on" data-id="home" onclick="goHome()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="nm">Home</span>
+      </button>
+      <span class="sb-label" id="subj-lbl" style="display:none">My Subjects</span>
+      <div id="sb-subjects"></div>
+    </nav>
+    <div class="sb-foot">
+      <div class="acct-panel">
+        <div class="acct-top">
+          <div class="acct-av" id="sb-av">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="acct-info">
+            <div class="acct-nm" id="sb-nm">Loading…</div>
+            <div class="acct-em" id="sb-em"></div>
+            <span class="acct-role" id="sb-role">Teacher</span>
+          </div>
+        </div>
+        <div class="acct-btns">
+          <button class="acct-btn" onclick="openAcctModal()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Account
+          </button>
+          <button class="acct-btn danger" onclick="doSignOut()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="mw">
+    <header class="tb">
+      <button class="tb-ham ib" id="tb-ham">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <button class="tb-back ib" id="tb-back" onclick="goBack()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="bc" id="bc"><span class="bcc on" onclick="goHome()">Home</span></div>
+      <div class="tb-r">
+        <span class="tb-chip" id="tb-role" style="display:none">Teacher</span>
+        <div class="tb-av" id="tb-av" onclick="openAcctModal()" title="Account">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+      </div>
+    </header>
+    <main class="ct"><div class="ct-in" id="ct">
+      <div class="loading"><div class="spin"></div><span>Authenticating…</span></div>
+    </div></main>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="mo" id="modal" style="display:none">
+  <div class="mc">
+    <div class="mc-h"><h2 id="mo-title">—</h2><button class="ib" onclick="closeMo()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="mc-body" id="mo-body"></div>
+  </div>
+</div>
+
+<!-- VIEWER -->
+<div class="viewer-mo" id="viewer" style="display:none">
+  <div class="viewer-tb">
+    <button class="ib" onclick="closeViewer()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="viewer-title" id="vt">Document</span>
+  </div>
+  <div class="viewer-body"><div class="viewer-wrap"><iframe id="vf" src="" allowfullscreen></iframe></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+/* ═══════════════════════════════════════════
+   NEXUS USER DASHBOARD · by Aarav Sinha
+   
+   DATA MODEL (read from Firestore):
+   /subjects/{code}  — subject doc with meet config
+     .name, .code, .meetLink, .meetSchedule
+     .meetDay, .meetHour, .meetMinute, .meetActive
+   
+   /items/{id}       — all content
+     .subjectId      — which top-level subject this belongs to
+     .parentId       — null = root of subject, else parent folder/chapter
+     .type           — folder | chapter | pdf | studymaterial | recording | note | link
+     .status         — approved | pending
+     .suggestedByName — set when user suggests a file
+═══════════════════════════════════════════ */
+const FC={apiKey:"AIzaSyCqEEBANVyt-ybQD8z-pys2V-07-lxEWjA",authDomain:"nexus-705ef.firebaseapp.com",projectId:"nexus-705ef",storageBucket:"nexus-705ef.firebasestorage.app",messagingSenderId:"982944171585",appId:"1:982944171585:web:de65b6827ca769565ba8c0"};
+const ADMIN="aaravhfs@gmail.com",WA="919073121019",EMAIL="aaravhfs@gmail.com";
+if(!firebase.apps.length)firebase.initializeApp(FC);
+const auth=firebase.auth(),db=firebase.firestore();
+const $=id=>document.getElementById(id);
+
+let CU=null,UD=null;
+let path=[];          // navigation stack: [{id,name,type,subjectId}]
+let allSubjects=[];   // all subjects from /subjects
+let userSubjects=[];  // subject codes the user has access to
+let homeTab='subjects';
+let meetTimerId=null;
+
+/* ── ICONS ── */
+const IC={
+  book:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+  folder:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
+  chapter:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+  pdf:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+  study:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+  video:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
+  videoW:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
+  note:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="12" y1="17" x2="8" y2="17"/></svg>`,
+  link:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+  lock:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+  clock:`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  plus:`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+  edit:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  out:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`,
+};
+function tIcon(t){return{folder:IC.folder,subject:IC.book,chapter:IC.chapter,pdf:IC.pdf,studymaterial:IC.study,recording:IC.video,note:IC.note,link:IC.link}[t]||IC.folder;}
+function tChip(t){return{pdf:'cr',studymaterial:'ck',recording:'cs',note:'cg',link:'cd',folder:'cd',subject:'cg',chapter:'cs'}[t]||'cd';}
+function tLbl(t){return{folder:'Folder',subject:'Subject',chapter:'Chapter',pdf:'PDF',studymaterial:'Study Mat.',link:'Link',recording:'Recording',note:'Note'}[t]||t;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmtD(ts){if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts);return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
+function gdEmbed(url){if(!url)return'';const m=url.match(/\/file\/d\/([^/?\\s]+)/);if(m)return`https://drive.google.com/file/d/${m[1]}/preview`;return url;}
+function toast(m,t){const el=$('toast');el.textContent=m;el.className='toast show'+(t==='ok'?' ok':t==='err'?' err':'');clearTimeout(window._tt);window._tt=setTimeout(()=>el.classList.remove('show'),3400);}
+
+/* ═══ AUTH — renders inline, no separate loader screen ═══ */
+auth.onAuthStateChanged(async u=>{
+  if(!u){window.location.href='index.html';return;}
+  if(u.email===ADMIN){window.location.href='admin.html';return;}
+  CU=u;
+  try{
+    const snap=await db.collection('users').doc(u.uid).get();
+    if(!snap.exists){await auth.signOut();window.location.href='register.html';return;}
+    const d=snap.data();
+    if(d.status==='pending'){await auth.signOut();window.location.href='login.html?msg=pending';return;}
+    if(d.status==='rejected'){await auth.signOut();window.location.href='login.html?msg=rejected';return;}
+    UD=d; userSubjects=d.subjects||[];
+    // Fire-and-forget last login update
+    db.collection('users').doc(u.uid).set({lastLogin:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}).catch(()=>{});
+    // Populate UI
+    const name=d.displayName||u.displayName||u.email||'User';
+    const photo=d.photoURL||u.photoURL||'';
+    $('sb-nm').textContent=name;
+    $('sb-em').textContent=u.email||'';
+    $('sb-role').textContent=d.role==='teacher'?'Teacher':'Student';
+    $('tb-role').textContent=d.role==='teacher'?'Teacher':'Student';
+    $('tb-role').style.display='';
+    if(photo){
+      $('sb-av').innerHTML=`<img src="${photo}" alt="" style="width:34px;height:34px;border-radius:50%;object-fit:cover"/>`;
+      $('tb-av').innerHTML=`<img src="${photo}" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover"/>`;
+    } else {
+      $('sb-av').textContent=name.charAt(0).toUpperCase();
+      $('tb-av').textContent=name.charAt(0).toUpperCase();
+    }
+    // Load subjects then render
+    await loadSubjects();
+    navigate([]);
+  }catch(e){
+    console.error(e);
+    $('ct').innerHTML=`<div style="padding:40px;color:var(--rose);font-family:var(--mono);font-size:.8rem">Error loading: ${esc(e.message)}<br><br><a href="login.html" style="color:var(--gold)">← Back to Sign In</a></div>`;
+  }
+});
+
+async function loadSubjects(){
+  try{
+    const snap=await db.collection('subjects').orderBy('order').get();
+    allSubjects=[];snap.forEach(d=>allSubjects.push({id:d.id,...d.data()}));
+    renderSidebar();
+  }catch(e){console.warn('subjects:',e.message);}
+}
+function renderSidebar(){
+  const mine=allSubjects.filter(s=>userSubjects.includes(s.id));
+  $('subj-lbl').style.display=mine.length?'':'none';
+  $('sb-subjects').innerHTML=mine.map(s=>`
+    <button class="sbi" data-id="${s.id}" onclick="navToSubject('${s.id}','${esc(s.name).replace(/'/g,"\\'")}')">
+      ${IC.book}
+      <span class="nm">${esc(s.name)}</span>
+    </button>`).join('');
+}
+function doSignOut(){if(meetTimerId)clearInterval(meetTimerId);auth.signOut().then(()=>window.location.href='index.html');}
+
+/* ═══ NAVIGATION ═══ */
+function navigate(p){
+  path=p;renderBC();renderContent();
+  const topId=p.length?p[0].id:null;
+  document.querySelectorAll('.sbi').forEach(el=>el.classList.toggle('on',el.dataset.id===topId||(el.dataset.id==='home'&&!topId)));
+}
+function goHome(){navigate([]);}
+function goBack(){if(path.length>0)navigate(path.slice(0,-1));}
+function navToSubject(id,name){navigate([{id,name,type:'subject',subjectId:id}]);}
+function renderBC(){
+  $('tb-back').classList.toggle('show',path.length>0);
+  let h=`<span class="bcc ${!path.length?'on':''}" onclick="goHome()">Home</span>`;
+  path.forEach((s,i)=>h+=`<span class="bcs">›</span><span class="bcc ${i===path.length-1?'on':''}" onclick="navigate(path.slice(0,${i+1}))">${esc(s.name)}</span>`);
+  $('bc').innerHTML=h;
+}
+function setTab(t){homeTab=t;renderContent();}
+
+/* ═══ CONTENT RENDERER ═══ */
+async function renderContent(){
+  $('ct').innerHTML=`<div class="loading"><div class="spin"></div><span>Loading…</span></div>`;
+  const depth=path.length,cur=depth?path[depth-1]:null;
+  // Chapter view
+  if(cur&&cur.type==='chapter'){await renderChapter(cur);return;}
+  // Folder/Subject view
+  if(cur){await renderFolder(cur);return;}
+  // Home
+  await renderHome();
+}
+
+/* HOME */
+async function renderHome(){
+  const first=(UD?.displayName||CU?.displayName||'').split(' ')[0]||'there';
+  const myCount=allSubjects.filter(s=>userSubjects.includes(s.id)).length;
+  let h=`<div class="hero"><div class="hero-eyebrow">Study Portal</div><h2>Welcome back, <em>${esc(first)}</em></h2><p class="hero-sub">Your organised space — textbooks, recordings, live classes and notes.</p></div>`;
+  h+=`<div class="stats-grid">
+    <div class="stat-card" style="animation-delay:.04s"><div class="stat-val">${myCount}</div><div class="stat-lbl">My Subjects</div></div>
+    <div class="stat-card" style="animation-delay:.08s"><div class="stat-val">${allSubjects.length}</div><div class="stat-lbl">Total Subjects</div></div>
+  </div>`;
+  h+=`<div class="tabs">
+    <button class="tab ${homeTab==='subjects'?'on':''}" onclick="setTab('subjects')">${IC.book} Subjects</button>
+    <button class="tab ${homeTab==='meet'?'on':''}" onclick="setTab('meet')">${IC.video} Join Class</button>
+    <button class="tab ${homeTab==='suggest'?'on':''}" onclick="setTab('suggest')">${IC.plus} Suggest File</button>
+    <button class="tab ${homeTab==='contact'?'on':''}" onclick="setTab('contact')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Support
+    </button>
+  </div>`;
+  if(homeTab==='meet'){
+    h+=buildAllMeetCards();
+  } else if(homeTab==='contact'){
+    h+=buildContactCard();
+  } else if(homeTab==='suggest'){
+    h+=buildSuggestCard();
+  } else {
+    // Subjects tab
+    if(!allSubjects.length){
+      h+=`<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><p>No subjects added yet.</p></div>`;
+    } else {
+      h+=`<div class="sec-row"><span class="sec-lbl">All Subjects</span><span class="sec-cnt">${allSubjects.length}</span></div><div class="grid">`;
+      allSubjects.forEach((s,i)=>{
+        const has=userSubjects.includes(s.id);
+        h+=`<div class="card ${has?'':'card-locked'}" style="animation-delay:${i*.04}s" onclick="${has?`navToSubject('${s.id}','${esc(s.name).replace(/'/g,"\\'")}')`:''}" >
+          <div class="card-icon" style="${has?'':'background:rgba(255,255,255,.04);border-color:var(--border)'}">${has?IC.book:IC.lock}</div>
+          <div class="card-name">${esc(s.name)}</div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <span class="chip ${has?'cg':'cd'}">${has?'Access':'No Access'}</span>
+            ${s.code?`<span style="font-size:.57rem;font-family:var(--mono);color:var(--gold);background:var(--goldBG);border-radius:4px;padding:1px 5px">${esc(s.code)}</span>`:''}
+          </div>
+          ${s.description?`<div class="card-sub">${esc(s.description)}</div>`:''}
+          ${!has?`<button class="btn btn-gold" style="font-size:.72rem;padding:6px 10px;margin-top:2px" onclick="reqAccess(event,'${s.id}','${esc(s.name).replace(/'/g,"\\'")}')">Request Access</button>`:''}
+        </div>`;
+      });
+      h+=`</div>`;
+    }
+  }
+  h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus Study Portal</div>`;
+  $('ct').innerHTML=h;
+  if(homeTab==='meet') startMeetTimers();
+}
+
+/* ALL MEET CARDS — one per accessible subject that has a meet link */
+function buildAllMeetCards(){
+  const mine=allSubjects.filter(s=>userSubjects.includes(s.id)&&s.meetLink);
+  if(!mine.length){
+    return `<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg><p>No live classes configured for your subjects yet.</p></div>`;
+  }
+  return mine.map(s=>buildMeetCard(s)).join('');
+}
+function buildMeetCard(s){
+  const state=getMeetState(s);
+  const nxt=getNextClass(s);
+  const nxtStr=nxt.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})+' · '+nxt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST';
+  let badge='',right='';
+  if(state==='live'){
+    badge=`<div class="ldot"></div><span class="live-lbl">Live Now</span>`;
+    right=`<button class="btn-join" onclick="window.open('${esc(s.meetLink)}','_blank')">${IC.videoW} Join Now</button>`;
+  } else if(state==='soon'){
+    badge=`<div class="ldot"></div><span class="live-lbl">Starting Soon</span>`;
+    right=`<button class="btn-join" onclick="window.open('${esc(s.meetLink)}','_blank')">${IC.videoW} Join Now</button><div class="cd-txt" id="cd-${s.id}"></div>`;
+  } else {
+    right=`<button class="btn-join soon" disabled>${IC.videoW} Scheduled</button><div class="cd-txt" id="cd-${s.id}">${nxtStr}</div>`;
+  }
+  return`<div class="meet-card" style="margin-bottom:14px"><div class="meet-row">
+    <div class="meet-col"><div class="meet-logo">${IC.videoW}</div></div>
+    <div class="meet-body">
+      <div class="meet-top">${badge}<span class="meet-lbl">Google Meet</span></div>
+      <div class="meet-title">${esc(s.name)}</div>
+      <div class="meet-time">${IC.clock} ${esc(s.meetSchedule||'See schedule')}</div>
+      ${s.description?`<div class="meet-desc">${esc(s.description)}</div>`:''}
+    </div>
+    <div class="meet-r">${right}</div>
+  </div></div>`;
+}
+function getMeetState(s){
+  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+  const day=s.meetDay??5,h=s.meetHour??20,m=s.meetMinute??30;
+  const mins=ist.getHours()*60+ist.getMinutes(),cs=h*60+m;
+  if(ist.getDay()===day&&mins>=cs&&mins<cs+120)return'live';
+  if(ist.getDay()===day&&mins>=cs-15&&mins<cs)return'soon';
+  return'scheduled';
+}
+function getNextClass(s){
+  const day=s.meetDay??5,h=s.meetHour??20,m=s.meetMinute??30;
+  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+  let d=(day-ist.getDay()+7)%7;
+  if(d===0&&ist.getHours()*60+ist.getMinutes()>=h*60+m+120)d=7;
+  const n=new Date(ist);n.setDate(ist.getDate()+d);n.setHours(h,m,0,0);return n;
+}
+function startMeetTimers(){
+  if(meetTimerId){clearInterval(meetTimerId);meetTimerId=null;}
+  const mine=allSubjects.filter(s=>userSubjects.includes(s.id)&&s.meetLink);
+  meetTimerId=setInterval(()=>{
+    mine.forEach(s=>{
+      const el=$(`cd-${s.id}`);if(!el)return;
+      const state=getMeetState(s);
+      if(state==='soon'){
+        const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+        const cs=(s.meetHour??20)*60+(s.meetMinute??30);
+        const rem=(cs-(ist.getHours()*60+ist.getMinutes()))*60-ist.getSeconds();
+        if(rem<=0){clearInterval(meetTimerId);renderContent();return;}
+        el.textContent=`Starts in ${Math.floor(rem/60)}m ${rem%60}s`;
+      } else if(state==='scheduled'){
+        const diff=getNextClass(s)-Date.now();
+        if(diff<=0){clearInterval(meetTimerId);renderContent();return;}
+        const dd=Math.floor(diff/86400000),dh=Math.floor((diff%86400000)/3600000),dm=Math.floor((diff%3600000)/60000);
+        el.textContent=dd>0?`${dd}d ${dh}h away`:`${dh}h ${dm}m away`;
+      }
+    });
+  },1000);
+}
+
+/* FOLDER VIEW */
+async function renderFolder(cur){
+  try{
+    const subjectId=path[0].id;
+    const snap=await db.collection('items').where('subjectId','==',subjectId).where('parentId','==',cur.id).where('status','==','approved').get();
+    const items=[];snap.forEach(d=>items.push({id:d.id,...d.data()}));
+    items.sort((a,b)=>(a.createdAt?.toMillis?.()||0)-(b.createdAt?.toMillis?.()||0));
+    let h=`<div class="ph"><div><div class="ph-t">${esc(cur.name)}</div><div class="ph-s">${items.length} item${items.length!==1?'s':''}</div></div></div>`;
+    if(!items.length){
+      h+=`<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><p>Nothing here yet.</p></div>`;
+    } else {
+      h+=`<div class="sec-row"><span class="sec-lbl">Contents</span><span class="sec-cnt">${items.length}</span></div><div class="grid">`;
+      items.forEach((it,i)=>{
+        const isNav=['folder','chapter'].includes(it.type);
+        const onClick=isNav
+          ?`navigate([...path,{id:'${it.id}',name:'${esc(it.name).replace(/'/g,"\\'")}',type:'${it.type}',subjectId:'${subjectId}'}])`
+          :`openViewer('${(it.url||'').replace(/'/g,"\\'")}','${esc(it.name).replace(/'/g,"\\'")}')`;
+        h+=`<div class="card" style="animation-delay:${i*.04}s" onclick="${onClick}">
+          <div class="card-icon">${tIcon(it.type)}</div>
+          <div class="card-name">${esc(it.name)}</div>
+          <span class="chip ${tChip(it.type)}">${tLbl(it.type)}</span>
+          ${it.description?`<div class="card-sub">${esc(it.description)}</div>`:''}
+          ${it.updatedAt||it.createdAt?`<div class="card-ts">${fmtD(it.updatedAt||it.createdAt)}</div>`:''}
+        </div>`;
+      });
+      h+=`</div>`;
+    }
+    h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus Study Portal</div>`;
+    $('ct').innerHTML=h;
+  }catch(e){$('ct').innerHTML=`<div class="empty"><p>${e.message}</p></div>`;console.error(e);}
+}
+
+/* CHAPTER VIEW */
+async function renderChapter(chapter){
+  try{
+    const subjectId=path[0].id;
+    const snap=await db.collection('items').where('subjectId','==',subjectId).where('parentId','==',chapter.id).where('status','==','approved').get();
+    const ch=[];snap.forEach(d=>ch.push({id:d.id,...d.data()}));
+    ch.sort((a,b)=>(a.createdAt?.toMillis?.()||0)-(b.createdAt?.toMillis?.()||0));
+    const tb=ch.filter(c=>c.type==='pdf'),
+          sm=ch.filter(c=>c.type==='studymaterial'),
+          rc=ch.filter(c=>c.type==='recording'),
+          nt=ch.filter(c=>c.type==='note'),
+          lk=ch.filter(c=>c.type==='link');
+    const pathStr=path.map(p=>p.name).join(' › ');
+    let h=`<div class="ch-banner"><div class="ch-path">${esc(pathStr)}</div><div class="ch-title">${esc(chapter.name)}</div><div class="ch-sub">${ch.length} resource${ch.length!==1?'s':''}</div></div>`;
+    // Suggest file button
+    h+=`<div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+      <button class="btn btn-gold" onclick="openSuggestModal('${subjectId}','${chapter.id}')">${IC.plus} Suggest a File</button>
+    </div>`;
+    h+=fSection('Textbook PDF',IC.pdf,tb);
+    h+=fSection('Study Materials',IC.study,sm);
+    if(lk.length)h+=fSection('Links',IC.link,lk);
+    h+=`<div class="sdiv"><span class="sdiv-t">Class Recordings</span></div>`;
+    h+=fSection('Recordings',IC.video,rc);
+    h+=`<div class="sdiv"><span class="sdiv-t">Class Notes & Summaries</span></div>`;
+    h+=notesSection(nt);
+    h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus Study Portal</div>`;
+    $('ct').innerHTML=h;
+  }catch(e){$('ct').innerHTML=`<div class="empty"><p>${e.message}</p></div>`;console.error(e);}
+}
+function fSection(label,iconSvg,items){
+  let h=`<div class="sec-row" style="margin-top:18px"><span class="sec-lbl">${label}</span><span class="sec-cnt">${items.length}</span></div>`;
+  if(!items.length)return h+`<div class="empty" style="padding:14px 0 18px"><div style="opacity:.2;margin-bottom:8px">${iconSvg}</div><p>Nothing here yet.</p></div>`;
+  h+=`<div class="flist">`;
+  items.forEach((f,i)=>{
+    h+=`<div class="frow" style="animation-delay:${i*.04}s" onclick="openViewer('${(f.url||'').replace(/'/g,"\\'")}','${esc(f.name).replace(/'/g,"\\'")}')">
+      <div class="frow-icon">${tIcon(f.type)}</div>
+      <div class="frow-body">
+        <div class="frow-name">${esc(f.name)}</div>
+        ${f.description?`<div class="frow-meta">${esc(f.description)}</div>`:''}
+        ${f.updatedAt||f.createdAt?`<div class="frow-meta" style="margin-top:2px">${fmtD(f.updatedAt||f.createdAt)}</div>`:''}
+      </div>
+      <div class="frow-r"><span class="chip ${tChip(f.type)}">${tLbl(f.type)}</span></div>
+    </div>`;
+  });
+  return h+`</div>`;
+}
+function notesSection(items){
+  let h=`<div class="sec-row"><span class="sec-lbl">Notes</span><span class="sec-cnt">${items.length}</span></div>`;
+  if(!items.length)return h+`<div class="empty" style="padding:14px 0 18px"><div style="opacity:.2;margin-bottom:8px">${IC.note}</div><p>No notes yet.</p></div>`;
+  h+=`<div class="flist">`;
+  items.forEach((n,i)=>{
+    h+=`<div class="frow note-row" style="animation-delay:${i*.04}s">
+      <div class="frow-icon">${IC.note}</div>
+      <div class="frow-body" style="flex:1">
+        <div class="frow-name">${esc(n.name)}</div>
+        ${n.updatedAt||n.createdAt?`<div class="frow-meta">${fmtD(n.updatedAt||n.createdAt)}</div>`:''}
+        ${n.content?`<div class="frow-content">${esc(n.content)}</div>`:''}
+        ${n.url?`<div style="margin-top:10px"><button class="btn btn-gold" style="font-size:.75rem;padding:7px 12px" onclick="openViewer('${(n.url||'').replace(/'/g,"\\'")}','${esc(n.name).replace(/'/g,"\\'")}')">Open Attached File</button></div>`:''}
+      </div>
+      <div class="frow-r"><span class="chip cg">Note</span></div>
+    </div>`;
+  });
+  return h+`</div>`;
+}
+
+/* CONTACT */
+function buildContactCard(){
+  return`<div class="info-card contact">
+    <div class="ic-lbl">Support</div>
+    <div class="ic-row">
+      <div class="ic-txt"><strong>Having issues?</strong> Contact the developer for help with missing materials, technical problems or website issues.</div>
+      <div class="ic-acts">
+        <button class="btn-wa" onclick="window.open('https://wa.me/${WA}?text=Hi+Aarav,+I+need+help+with+Nexus.','_blank')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
+          WhatsApp
+        </button>
+        <button class="btn-em" onclick="window.location.href='mailto:${EMAIL}?subject=Nexus+Support'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email
+        </button>
+      </div>
+    </div>
+    <div style="margin-top:9px;font-size:.66rem;color:var(--t3);font-family:var(--mono)">${EMAIL} · +91 90731 21019</div>
+  </div>`;
+}
+
+/* SUGGEST CARD */
+function buildSuggestCard(){
+  // Get current subject from path if any
+  const subjectId=path.length?path[0].id:'';
+  const parentId=path.length>1?path[path.length-1].id:'';
+  return`<div class="info-card suggest">
+    <div class="ic-lbl">Suggest a File</div>
+    <div class="ic-row">
+      <div class="ic-txt">Have a useful resource? <strong>Suggest it to admin</strong> — if approved, it'll appear for everyone in the right chapter.</div>
+      <button class="btn btn-gold" onclick="openSuggestModal('${subjectId}','${parentId}')">${IC.plus} Suggest File</button>
+    </div>
+    <div style="margin-top:10px;font-size:.71rem;color:var(--t3)">Navigate into a chapter first for the file to be placed correctly.</div>
+  </div>`;
+}
+
+/* SUGGEST MODAL */
+function openSuggestModal(subjectId,parentId){
+  $('mo-title').textContent='Suggest a File';
+  $('mo-body').innerHTML=`
+    <div class="fi-tag">Admin reviews before publishing</div>
+    <div class="fg"><label>File Name *</label><input class="fi" id="sg-n" placeholder="e.g. Chapter 3 Extra Notes" autocomplete="off"/></div>
+    <div class="fg"><label>Google Drive Link *</label>
+      <input class="fi" id="sg-u" placeholder="https://drive.google.com/file/d/…"/>
+      <span class="fi-hint">Set Drive sharing to "Anyone with the link".</span>
+    </div>
+    <div class="fg"><label>Description <span style="opacity:.45;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label>
+      <input class="fi" id="sg-d" placeholder="Brief description…" autocomplete="off"/>
+    </div>
+    <div class="fg"><label>Type</label>
+      <select class="fsel" id="sg-t">
+        <option value="studymaterial">Study Material</option>
+        <option value="pdf">PDF Document</option>
+        <option value="recording">Recording</option>
+        <option value="link">Link</option>
+      </select>
+    </div>
+    <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="submitSuggestion('${subjectId}','${parentId}')">Submit</button></div>`;
+  openMo();
+}
+async function submitSuggestion(subjectId,parentId){
+  const name=$('sg-n').value.trim(),url=$('sg-u').value.trim(),desc=$('sg-d').value.trim(),type=$('sg-t').value;
+  if(!name){toast('Name required.','err');return;}
+  if(!url||!url.includes('drive.google.com')){toast('Please enter a valid Google Drive link.','err');return;}
+  try{
+    await db.collection('items').add({
+      name,type,description:desc,
+      url:gdEmbed(url),rawUrl:url,
+      subjectId:subjectId||null,
+      parentId:parentId||null,
+      status:'pending',
+      suggestedBy:CU.email,
+      suggestedByName:UD?.displayName||CU.displayName||CU.email,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    closeMo();toast('Suggestion submitted. Admin will review it.','ok');
+  }catch(e){toast('Error: '+e.message,'err');console.error(e);}
+}
+
+/* REQUEST ACCESS */
+async function reqAccess(e,subjectId,subjectName){
+  e.stopPropagation();
+  $('mo-title').textContent='Request Subject Access';
+  $('mo-body').innerHTML=`
+    <div class="info-box gold">Requesting access to <strong>${esc(subjectName)}</strong>. Admin will review your request.</div>
+    <div class="fg"><label>Message to Admin <span style="opacity:.45;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label>
+      <textarea class="fta" id="ra-msg" placeholder="Why you need access to this subject…" style="min-height:72px"></textarea>
+    </div>
+    <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="sendAccessRequest('${subjectId}','${esc(subjectName).replace(/'/g,"\\'")}')" >Send Request</button></div>`;
+  openMo();
+}
+async function sendAccessRequest(subjectId,subjectName){
+  const msg=$('ra-msg').value.trim();
+  try{
+    const ex=await db.collection('accessRequests').where('userId','==',CU.uid).where('subjectId','==',subjectId).where('status','==','pending').get();
+    if(!ex.empty){toast('You already have a pending request for this subject.','err');return;}
+    await db.collection('accessRequests').add({userId:CU.uid,userEmail:CU.email,userName:UD?.displayName||CU.displayName||CU.email,subjectId,subjectName,message:msg,status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    closeMo();toast('Request sent. Admin will review it.','ok');
+  }catch(e){toast('Error: '+e.message,'err');console.error(e);}
+}
+
+/* ACCOUNT MODAL */
+function openAcctModal(){
+  const name=UD?.displayName||CU?.displayName||'',photo=UD?.photoURL||CU?.photoURL||'',role=UD?.role||'student';
+  const subjects=(UD?.subjects||[]).map(id=>{const s=allSubjects.find(x=>x.id===id);return s?s.name:id;}).join(', ')||'—';
+  $('mo-title').textContent='Account';
+  $('mo-body').innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;padding:13px 15px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:4px">
+      ${photo?`<img src="${photo}" style="width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(201,168,76,.28);object-fit:cover;flex-shrink:0"/>`:`<div style="width:44px;height:44px;border-radius:50%;background:var(--goldBG);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.15rem;font-weight:700;flex-shrink:0">${name.charAt(0).toUpperCase()}</div>`}
+      <div style="min-width:0">
+        <div style="font-size:.88rem;font-weight:600;color:var(--t0)">${esc(name)}</div>
+        <div style="font-size:.68rem;color:var(--t2);font-family:var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(CU?.email||'')}</div>
+        <div style="font-size:.64rem;color:var(--t3);margin-top:3px">Role: ${role}</div>
+        <div style="font-size:.64rem;color:var(--t3)">Subjects: ${esc(subjects)}</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+      <button class="btn btn-ghost btn-full" onclick="openEditProfile()">${IC.edit} Edit Display Name</button>
+      <button class="btn btn-danger btn-full" onclick="doSignOut()">${IC.out} Sign Out</button>
+    </div>`;
+  openMo();
+}
+function openEditProfile(){
+  const name=UD?.displayName||CU?.displayName||'';
+  $('mo-title').textContent='Edit Profile';
+  $('mo-body').innerHTML=`
+    <div class="fg"><label>Display Name</label><input class="fi" id="ep-nm" value="${esc(name)}" autocomplete="name" autocorrect="off"/></div>
+    <span class="fi-hint">Email used for login cannot be changed here.</span>
+    <div class="mc-ft"><button class="btn btn-ghost" onclick="openAcctModal()">Back</button><button class="btn btn-gold" onclick="saveProfile()">Save</button></div>`;
+  setTimeout(()=>{const i=$('ep-nm');if(i){i.focus();i.select();}},60);
+}
+async function saveProfile(){
+  const nm=$('ep-nm').value.trim();if(!nm){toast('Name cannot be empty.','err');return;}
+  try{
+    await db.collection('users').doc(CU.uid).update({displayName:nm});
+    await CU.updateProfile({displayName:nm});
+    UD.displayName=nm;$('sb-nm').textContent=nm;
+    if(!UD?.photoURL&&!CU?.photoURL){$('sb-av').textContent=nm.charAt(0).toUpperCase();$('tb-av').textContent=nm.charAt(0).toUpperCase();}
+    closeMo();toast('Profile updated.','ok');
+  }catch(e){toast('Error: '+e.message,'err');}
+}
+
+/* VIEWER */
+function openViewer(url,name){if(!url){toast('No URL for this file.','err');return;}$('vt').textContent=name;$('vf').src=gdEmbed(url);$('viewer').style.display='flex';}
+function closeViewer(){$('viewer').style.display='none';$('vf').src='';}
+
+/* MODAL */
+function openMo(){$('modal').style.display='flex';}
+function closeMo(){$('modal').style.display='none';}
+$('modal').addEventListener('click',e=>{if(e.target===$('modal'))closeMo();});
+
+/* MOBILE */
+$('tb-ham').addEventListener('click',()=>$('sb').classList.toggle('open'));
+$('sb-x').addEventListener('click',()=>$('sb').classList.remove('open'));
+
+/* GLOBALS */
+window.navigate=navigate;window.goHome=goHome;window.goBack=goBack;window.navToSubject=navToSubject;
+window.setTab=setTab;window.openViewer=openViewer;window.closeViewer=closeViewer;
+window.openMo=openMo;window.closeMo=closeMo;window.openAcctModal=openAcctModal;window.openEditProfile=openEditProfile;window.saveProfile=saveProfile;
+window.openSuggestModal=openSuggestModal;window.submitSuggestion=submitSuggestion;
+window.reqAccess=reqAccess;window.sendAccessRequest=sendAccessRequest;window.doSignOut=doSignOut;
+</script>
+</body>
+</html>
