@@ -10,57 +10,54 @@
 <style>
 body{overflow:hidden;height:100vh}
 .app{display:flex;height:100vh;position:relative;z-index:1}
-
-/* Admin sidebar tweaks */
 .sb-admin-sub{font-size:.55rem;font-family:var(--mono);letter-spacing:.08em;color:var(--gold);opacity:.6;margin-top:2px}
 .sb-foot-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
 .sb-foot-btn{padding:8px 6px;background:var(--glass);border:1px solid var(--border);border-radius:8px;color:var(--t2);font-size:.71rem;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;font-family:var(--sans)}
 .sb-foot-btn:hover{background:var(--glass2);color:var(--t0)}
 .sb-foot-btn.danger:hover{color:var(--rose);border-color:rgba(192,99,90,.25)}
-
-/* Admin chip */
 .admin-av-wrap{width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(201,168,76,.3);background:var(--goldBG2);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.95rem;font-weight:700;overflow:hidden;flex-shrink:0}
 .admin-av-wrap img{width:100%;height:100%;object-fit:cover}
 
-/* Panel */
-.panel{display:none}.panel.on{display:block}
+/* MEET CARD */
+.meet-card-admin{background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);padding:20px 22px;margin-bottom:14px;transition:border-color .2s}
+.meet-card-admin:hover{border-color:var(--borderH)}
+.mca-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.mca-info{flex:1;min-width:0}
+.mca-title{font-size:.94rem;font-weight:600;color:var(--t0);margin-bottom:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mca-code{font-size:.6rem;font-family:var(--mono);color:var(--gold);background:var(--goldBG);border:1px solid var(--borderH);border-radius:5px;padding:1px 7px;letter-spacing:.06em}
+.mca-url{font-size:.72rem;font-family:var(--mono);color:var(--sky);word-break:break-all;line-height:1.4;margin-bottom:4px}
+.mca-sched{font-size:.69rem;color:var(--t2);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.mca-status{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-family:var(--mono);letter-spacing:.06em;padding:3px 10px;border-radius:99px;text-transform:uppercase}
+.mca-status.inactive{background:rgba(255,255,255,.05);color:var(--t3);border:1px solid var(--border)}
+.mca-status.soon-st{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid var(--borderH)}
+.mca-status.live-st{background:rgba(107,158,122,.12);color:var(--sage);border:1px solid rgba(107,158,122,.25)}
+.mca-status .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.mca-status.inactive .dot{background:var(--t3)}
+.mca-status.soon-st .dot{background:var(--gold);animation:lpulse 2s ease infinite}
+.mca-status.live-st .dot{background:var(--sage);animation:lpulse 2s ease infinite}
+@keyframes lpulse{0%,100%{box-shadow:0 0 0 2px rgba(107,158,122,.2)}50%{box-shadow:0 0 0 5px rgba(107,158,122,.08)}}
+.mca-extra{font-size:.69rem;color:var(--t2);font-family:var(--mono);margin-top:4px}
+.mca-btns{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
 
-/* Subject tree item */
+/* Stree */
 .stree-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--glass);border:1px solid var(--border);border-radius:var(--r);margin-bottom:6px;cursor:pointer;transition:all .18s}
 .stree-item:hover{border-color:var(--borderH);background:rgba(201,168,76,.04)}
-.stree-item.selected{border-color:var(--borderH);background:var(--goldBG)}
 .stree-item-icon{width:32px;height:32px;border-radius:8px;background:var(--glass2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .stree-item-icon svg{color:var(--t1)}
 .stree-item-info{flex:1;min-width:0}
 .stree-item-name{font-size:.85rem;font-weight:500;color:var(--t0)}
 .stree-item-meta{font-size:.62rem;color:var(--t3);font-family:var(--mono);margin-top:2px}
 .stree-item-acts{display:flex;gap:5px;flex-shrink:0}
-.stree-sub{margin-left:22px;padding-left:12px;border-left:1px solid var(--border)}
-
-/* Meet config card */
-.meet-cfg{background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);padding:18px 20px;margin-bottom:12px;transition:border-color .2s}
-.meet-cfg:hover{border-color:var(--borderH)}
-.meet-cfg-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.meet-cfg-title{font-size:.9rem;font-weight:600;color:var(--t0)}
-.meet-cfg-code{font-size:.6rem;font-family:var(--mono);color:var(--gold);background:var(--goldBG);border:1px solid var(--borderH);border-radius:5px;padding:1px 6px;letter-spacing:.06em}
-.meet-status-dot{width:7px;height:7px;border-radius:50%;background:var(--rose);flex-shrink:0}
-.meet-status-dot.live{background:var(--sage);animation:lpulse 2s ease infinite}
-@keyframes lpulse{0%,100%{box-shadow:0 0 0 2px rgba(107,158,122,.2)}50%{box-shadow:0 0 0 5px rgba(107,158,122,.08)}}
-.meet-url-display{font-size:.73rem;font-family:var(--mono);color:var(--sky);word-break:break-all;line-height:1.4;margin-bottom:6px}
-.meet-sched-display{font-size:.7rem;color:var(--t2);margin-bottom:10px}
-
-/* Content manager header */
-.cm-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .cm-bc{display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap}
 .cm-bc-item{font-size:.78rem;color:var(--t2);cursor:pointer;padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:transparent;transition:all .15s;font-family:var(--sans)}
 .cm-bc-item:hover,.cm-bc-item.on{color:var(--gold);border-color:var(--borderH);background:var(--goldBG)}
 .cm-bc-sep{color:var(--t3);font-size:.65rem}
 
-/* User row */
-.user-status-chip{font-size:.58rem;font-family:var(--mono);letter-spacing:.06em;padding:2px 7px;border-radius:99px;width:fit-content;text-transform:uppercase;font-weight:600}
-.us-approved{background:rgba(107,158,122,.12);color:var(--sage)}
-.us-pending{background:rgba(192,99,90,.12);color:var(--rose)}
-.us-rejected{background:rgba(255,255,255,.06);color:var(--t2)}
+/* User status */
+.us-chip{font-size:.58rem;font-family:var(--mono);letter-spacing:.06em;padding:2px 7px;border-radius:99px;text-transform:uppercase;font-weight:600}
+.us-a{background:rgba(107,158,122,.12);color:var(--sage)}
+.us-p{background:rgba(192,99,90,.12);color:var(--rose)}
+.us-r{background:rgba(255,255,255,.06);color:var(--t2)}
 </style>
 </head>
 <body>
@@ -166,25 +163,24 @@ body{overflow:hidden;height:100vh}
 <script>
 /* ═══════════════════════════════════════
    NEXUS ADMIN · by Aarav Sinha
-   
-   DATA MODEL:
-   /subjects/{code}  — subject doc, also stores meet config
-   /items/{id}       — all content nodes
-     .subjectId      — which top-level subject
-     .parentId       — null = root of subject, else parent item id
-     .type           — folder | chapter | pdf | studymaterial | recording | note | link
-     .status         — approved | pending
+
+   MEET STATE STORED ON SUBJECT DOC:
+   meetState: 'inactive' | 'soon' | 'live'
+   meetStateSetAt: Timestamp  (when state was last changed)
+   meetDuration: number (minutes, for live class)
+   meetAutoEndAt: Timestamp   (computed: live start + duration)
+   meetLink: string
+   meetSchedule: string (display label)
+   meetDay/Hour/Minute: recurring schedule
 ═══════════════════════════════════════ */
 const FC={apiKey:"AIzaSyCqEEBANVyt-ybQD8z-pys2V-07-lxEWjA",authDomain:"nexus-705ef.firebaseapp.com",projectId:"nexus-705ef",storageBucket:"nexus-705ef.firebasestorage.app",messagingSenderId:"982944171585",appId:"1:982944171585:web:de65b6827ca769565ba8c0"};
 const ADMIN="aaravhfs@gmail.com";
 if(!firebase.apps.length)firebase.initializeApp(FC);
 const auth=firebase.auth(),db=firebase.firestore();
 const $=id=>document.getElementById(id);
-let AU=null,panel='overview';
-// contentPath: [{id, name, type, subjectId}]  — for subjects panel breadcrumb
-let cPath=[];
+let AU=null,panel='overview',cPath=[],meetListeners={};
 
-/* ── ICONS ── */
+/* ICONS */
 const IC={
   book:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
   folder:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
@@ -194,14 +190,11 @@ const IC={
   video:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
   note:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="12" y1="17" x2="8" y2="17"/></svg>`,
   link:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
-  users:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-  meet:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
-  plus:`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
   clock:`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-  videoW:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
+  plus:`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
 };
 function tIcon(t){return{folder:IC.folder,subject:IC.book,chapter:IC.chapter,pdf:IC.pdf,studymaterial:IC.study,recording:IC.video,note:IC.note,link:IC.link}[t]||IC.folder;}
-function tChip(t){const m={pdf:'cr',studymaterial:'ck',recording:'cs',note:'cg',link:'cd',folder:'cd',subject:'cg',chapter:'cs'};return m[t]||'cd';}
+function tChip(t){return{pdf:'cr',studymaterial:'ck',recording:'cs',note:'cg',link:'cd',folder:'cd',subject:'cg',chapter:'cs'}[t]||'cd';}
 function tLbl(t){return{folder:'Folder',subject:'Subject',chapter:'Chapter',pdf:'PDF',studymaterial:'Study Mat.',link:'Link',recording:'Recording',note:'Note'}[t]||t;}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fmtD(ts){if(!ts)return'—';const d=ts.toDate?ts.toDate():new Date(ts);return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
@@ -210,6 +203,42 @@ function gdEmbed(url){if(!url)return'';const m=url.match(/\/file\/d\/([^/?\\s]+)
 function toast(m,t){const el=$('toast');el.textContent=m;el.className='toast show'+(t==='ok'?' ok':t==='err'?' err':'');clearTimeout(window._tt);window._tt=setTimeout(()=>el.classList.remove('show'),3400);}
 function ld(){return`<div class="loading"><div class="spin"></div><span>Loading…</span></div>`;}
 
+/* ── EFFECTIVE MEET STATE ──
+   Reads meetState + meetAutoEndAt to compute current state.
+   If state is 'live' and now > meetAutoEndAt → treat as 'inactive'.
+   If state is 'soon' and now > soonStartAt + 15min → treat as 'inactive' (expired).
+*/
+function effectiveMeetState(s){
+  const st=s.meetState||'inactive';
+  const now=Date.now();
+  if(st==='live'){
+    if(s.meetAutoEndAt){
+      const endMs=s.meetAutoEndAt.toMillis?s.meetAutoEndAt.toMillis():Number(s.meetAutoEndAt);
+      if(now>=endMs)return'inactive';
+    }
+    return'live';
+  }
+  if(st==='soon'){
+    // soon expires after 15 minutes if no manual change
+    if(s.meetStateSetAt){
+      const setMs=s.meetStateSetAt.toMillis?s.meetStateSetAt.toMillis():Number(s.meetStateSetAt);
+      if(now>=setMs+15*60*1000)return'inactive';
+    }
+    return'soon';
+  }
+  return'inactive';
+}
+function meetStateLabel(st){
+  if(st==='live')return'Live Now';
+  if(st==='soon')return'Starting Soon';
+  return'Inactive';
+}
+function meetStateClass(st){
+  if(st==='live')return'live-st';
+  if(st==='soon')return'soon-st';
+  return'inactive';
+}
+
 /* ── AUTH ── */
 auth.onAuthStateChanged(u=>{
   if(!u||u.email!==ADMIN){window.location.href='index.html';return;}
@@ -217,7 +246,12 @@ auth.onAuthStateChanged(u=>{
   if(u.photoURL)$('adm-av').innerHTML=`<img src="${u.photoURL}" alt=""/>`;
   goPanel('overview');loadBadges();
 });
-function doSignOut(){auth.signOut().then(()=>window.location.href='index.html');}
+function doSignOut(){
+  // Unsubscribe all meet listeners
+  Object.values(meetListeners).forEach(unsub=>unsub());
+  meetListeners={};
+  auth.signOut().then(()=>window.location.href='index.html');
+}
 
 async function loadBadges(){
   try{
@@ -231,6 +265,8 @@ async function loadBadges(){
 const TITLES={overview:'Overview',users:'User Management',subjects:'Subjects & Content',meet:'Meet Settings',requests:'File Requests'};
 function goPanel(p){
   panel=p; cPath=[];
+  // Unsubscribe meet listeners when leaving meet panel
+  if(p!=='meet'){Object.values(meetListeners).forEach(u=>u());meetListeners={};}
   document.querySelectorAll('.sbi').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
   $('tb-title').textContent=TITLES[p]||p;
   $('tb-add').style.display=p==='subjects'?'flex':'none';
@@ -270,7 +306,7 @@ async function renderUsers(){
     let h='';
     if(pend.length){h+=`<div class="sec-row"><span class="sec-lbl">Pending</span><span class="sec-cnt">${pend.length}</span></div>`;pend.forEach(u=>h+=userRow(u,true));h+=`<div style="height:18px"></div>`;}
     h+=`<div class="sec-row"><span class="sec-lbl">Approved Users</span><span class="sec-cnt">${appr.length}</span></div>`;
-    if(!appr.length)h+=`<div class="empty"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><p>No approved users yet.</p></div>`;
+    if(!appr.length)h+=`<div class="empty"><p>No approved users yet.</p></div>`;
     else appr.forEach(u=>h+=userRow(u,false));
     if(rej.length){h+=`<div class="sec-row" style="margin-top:18px"><span class="sec-lbl">Rejected</span><span class="sec-cnt">${rej.length}</span></div>`;rej.forEach(u=>h+=userRow(u,false));}
     h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus Admin</div>`;
@@ -278,7 +314,7 @@ async function renderUsers(){
   }catch(e){$('ct').innerHTML=`<div class="empty"><p>${e.message}</p></div>`;}
 }
 function userRow(u,showApprove){
-  const chip=u.status==='approved'?'<span class="user-status-chip us-approved">Approved</span>':u.status==='pending'?'<span class="user-status-chip us-pending">Pending</span>':'<span class="user-status-chip us-rejected">Rejected</span>';
+  const chip=u.status==='approved'?'<span class="us-chip us-a">Approved</span>':u.status==='pending'?'<span class="us-chip us-p">Pending</span>':'<span class="us-chip us-r">Rejected</span>';
   const subjs=(u.subjects||[]).join(', ')||'—';
   return`<div class="list-row">
     <div class="row-av">${u.photoURL?`<img src="${u.photoURL}" alt=""/>`:(u.displayName||'?').charAt(0).toUpperCase()}</div>
@@ -307,7 +343,8 @@ function editUser(uid){
       <div class="fg"><label>Role</label><select class="fsel" id="eu-role"><option value="teacher" ${u.role==='teacher'?'selected':''}>Teacher</option><option value="student" ${u.role==='student'?'selected':''}>Student</option></select></div>
       <div class="fg"><label>Subject Codes (comma-separated)</label>
         <input class="fi" id="eu-subj" value="${esc((u.subjects||[]).join(','))}"/>
-        <span class="fi-hint">Use the subject codes from "Subjects & Content". E.g. ENG11,MATH10</span></div>
+        <span class="fi-hint">Use exact subject codes. E.g. ENG11,MATH10</span>
+      </div>
       <div class="fg"><label>Status</label><select class="fsel" id="eu-st"><option value="approved" ${u.status==='approved'?'selected':''}>Approved</option><option value="pending" ${u.status==='pending'?'selected':''}>Pending</option><option value="rejected" ${u.status==='rejected'?'selected':''}>Rejected</option></select></div>
       <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="saveUser('${uid}')">Save</button></div>`;
     openMo();
@@ -319,48 +356,40 @@ async function saveUser(uid){
   try{await db.collection('users').doc(uid).update({displayName:nm,role,subjects:subj,status});closeMo();toast('Updated!','ok');renderUsers();}catch(e){toast(e.message,'err');}
 }
 
-/* ══════════════ SUBJECTS & CONTENT (UNIFIED) ══════════════
-   This is the single place for everything subject-related.
-   cPath = [] means show all subjects.
-   cPath = [{id, name, type:'subject', subjectId}] means inside a subject.
-   cPath = [..., {id, name, type:'folder'|'chapter', subjectId}] means deeper.
-══════════════════════════════════════════════════════════ */
+/* ══════════════ SUBJECTS & CONTENT ══════════════ */
 async function renderSubjects(){
-  cPath=[];
-  await renderContentLevel();
+  cPath=[];await renderContentLevel();
 }
 async function renderContentLevel(){
   $('ct').innerHTML=ld();
-  const depth=cPath.length;
-  const cur=depth?cPath[depth-1]:null;
+  const depth=cPath.length,cur=depth?cPath[depth-1]:null;
   const subjectId=depth?cPath[0].id:null;
-  // breadcrumb
-  let bcH=`<div class="cm-header"><div class="cm-bc">`;
-  bcH+=`<button class="cm-bc-item ${depth===0?'on':''}" onclick="cPath=[];renderContentLevel()">All Subjects</button>`;
+  let bcH=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+    <div class="cm-bc">
+      <button class="cm-bc-item ${depth===0?'on':''}" onclick="cPath=[];renderContentLevel()">All Subjects</button>`;
   cPath.forEach((s,i)=>{bcH+=`<span class="cm-bc-sep">›</span><button class="cm-bc-item ${i===depth-1?'on':''}" onclick="cPath=cPath.slice(0,${i+1});renderContentLevel()">${esc(s.name)}</button>`;});
   bcH+=`</div>`;
-  if(depth===0){bcH+=`<button class="btn btn-gold btn-sm" onclick="openAddSubject()">${IC.plus} New Subject</button>`;}
-  else{bcH+=`<button class="btn btn-gold btn-sm" onclick="openAddItem()">${IC.plus} Add Item</button>`;}
+  if(depth===0)bcH+=`<button class="btn btn-gold btn-sm" onclick="openAddSubject()">${IC.plus} New Subject</button>`;
+  else bcH+=`<button class="btn btn-gold btn-sm" onclick="openAddItem()">${IC.plus} Add Item</button>`;
   bcH+=`</div>`;
-
   try{
     if(depth===0){
-      // Show subjects
       const snap=await db.collection('subjects').orderBy('order').get();
       let h=bcH;
-      if(snap.empty)h+=`<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><p>No subjects yet. Click "New Subject".</p></div>`;
+      if(snap.empty)h+=`<div class="empty"><p>No subjects yet. Click "New Subject".</p></div>`;
       snap.forEach(d=>{
         const s={id:d.id,...d.data()};
-        const hasLink=!!s.meetLink;
+        const st=effectiveMeetState(s);
+        const stDot=st==='live'?'<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sage);margin-right:5px;vertical-align:middle"></span>':st==='soon'?'<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:5px;vertical-align:middle"></span>':'';
         h+=`<div class="stree-item" onclick="enterSubject('${s.id}','${esc(s.name).replace(/'/g,"\\'")}')">
           <div class="stree-item-icon" style="background:var(--goldBG);border-color:var(--borderH)">${IC.book}</div>
           <div class="stree-item-info">
-            <div class="stree-item-name">${esc(s.name)}</div>
+            <div class="stree-item-name">${stDot}${esc(s.name)}</div>
             <div class="stree-item-meta"><span style="color:var(--gold);background:var(--goldBG);border-radius:4px;padding:0 5px;font-size:.59rem;letter-spacing:.06em">${esc(s.code||s.id)}</span>${s.description?` · ${esc(s.description)}`:''}</div>
-            <div class="stree-item-meta" style="margin-top:3px">${hasLink?`<span style="color:var(--sky)">Meet: ${esc(s.meetLink)}</span>`:'<span style="color:var(--t3)">No meet link set</span>'}</div>
+            <div class="stree-item-meta">${s.meetLink?`<span style="color:var(--sky)">${esc(s.meetLink)}</span>`:'<span style="color:var(--t3)">No meet link</span>'}</div>
           </div>
           <div class="stree-item-acts" onclick="event.stopPropagation()">
-            <button class="btn btn-sky btn-sm" onclick="editSubjectMeet('${s.id}')">Meet</button>
+            <button class="btn btn-sky btn-sm" onclick="openMeetConfig('${s.id}')">Meet</button>
             <button class="btn btn-ghost btn-sm" onclick="editSubject('${s.id}')">Edit</button>
             <button class="btn btn-danger btn-sm" onclick="deleteSubject('${s.id}')">Del</button>
           </div>
@@ -369,7 +398,6 @@ async function renderContentLevel(){
       h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus Admin</div>`;
       $('ct').innerHTML=h;
     } else {
-      // Show items inside current level
       const isChapter=cur.type==='chapter';
       const q=db.collection('items').where('subjectId','==',subjectId).where('parentId','==',cur.id);
       const snap=await q.get();
@@ -377,25 +405,20 @@ async function renderContentLevel(){
       items.sort((a,b)=>(a.createdAt?.toMillis?.()||0)-(b.createdAt?.toMillis?.()||0));
       let h=bcH;
       if(isChapter){
-        // Chapter: show sections
         const tb=items.filter(i=>i.type==='pdf'),sm=items.filter(i=>i.type==='studymaterial'),rc=items.filter(i=>i.type==='recording'),nt=items.filter(i=>i.type==='note'),lk=items.filter(i=>i.type==='link');
         h+=`<div class="ch-banner"><div class="ch-path">${cPath.map(p=>p.name).join(' › ')}</div><div class="ch-title">${esc(cur.name)}</div><div class="ch-sub">${items.length} item${items.length!==1?'s':''}</div></div>`;
-        h+=itemSection('Textbook PDF',tb);
-        h+=itemSection('Study Materials',sm);
-        h+=itemSection('Class Recordings',rc);
-        h+=itemSection('Class Notes & Summaries',nt,true);
-        if(lk.length)h+=itemSection('Links',lk);
+        h+=adminItemSection('Textbook PDF',tb)+adminItemSection('Study Materials',sm)+adminItemSection('Recordings',rc)+adminNoteSection(nt);
+        if(lk.length)h+=adminItemSection('Links',lk);
       } else {
-        // Folder/Subject level: show folders, chapters, items
         h+=`<div style="font-family:var(--serif);font-size:1.4rem;font-weight:600;color:var(--t0);margin-bottom:16px">${esc(cur.name)}</div>`;
-        if(!items.length)h+=`<div class="empty"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><p>Nothing here. Click "+ Add Item".</p></div>`;
+        if(!items.length)h+=`<div class="empty"><p>Nothing here. Click "+ Add Item".</p></div>`;
         items.forEach((it,i)=>{
           const isPend=it.status==='pending';
           const isNav=['folder','chapter'].includes(it.type);
           h+=`<div class="frow ${isPend?'pending-row':''}" style="animation-delay:${i*.03}s">
             <div class="frow-icon">${tIcon(it.type)}</div>
             <div class="frow-body" onclick="${isNav?`enterNode('${it.id}','${esc(it.name).replace(/'/g,"\\'")}','${it.type}')`:`openViewer('${(it.url||'').replace(/'/g,"\\'")}','${esc(it.name).replace(/'/g,"\\'")}')` }" style="cursor:pointer;flex:1">
-              <div class="frow-name">${esc(it.name)} ${isPend?'<span style="color:var(--rose);font-size:.7rem">(Pending approval)</span>':''}</div>
+              <div class="frow-name">${esc(it.name)} ${isPend?'<span style="color:var(--rose);font-size:.7rem">(Pending)</span>':''}</div>
               <div class="frow-meta">${tLbl(it.type)} · ${fmtDT(it.updatedAt||it.createdAt)}</div>
             </div>
             <div class="frow-r">
@@ -412,18 +435,16 @@ async function renderContentLevel(){
     }
   }catch(e){$('ct').innerHTML=bcH+`<div class="empty"><p>Error: ${esc(e.message)}</p></div>`;console.error(e);}
 }
-
-function itemSection(label,items,isNote=false){
+function adminItemSection(label,items){
   let h=`<div class="sec-row" style="margin-top:18px"><span class="sec-lbl">${label}</span><span class="sec-cnt">${items.length}</span></div>`;
-  if(!items.length)return h+`<div class="empty" style="padding:14px 0 18px"><p>None yet.</p></div>`;
+  if(!items.length)return h+`<div class="empty" style="padding:10px 0 16px"><p>None yet.</p></div>`;
   h+=`<div class="flist">`;
   items.forEach((it,i)=>{
-    h+=`<div class="frow ${isNote?'note-row':''}" style="animation-delay:${i*.03}s">
+    h+=`<div class="frow" style="animation-delay:${i*.03}s">
       <div class="frow-icon">${tIcon(it.type)}</div>
       <div class="frow-body" style="flex:1">
         <div class="frow-name">${esc(it.name)}</div>
         <div class="frow-meta">${fmtDT(it.updatedAt||it.createdAt)}</div>
-        ${it.content?`<div class="frow-content">${esc(it.content)}</div>`:''}
       </div>
       <div class="frow-r">
         <span class="chip ${tChip(it.type)}">${tLbl(it.type)}</span>
@@ -435,18 +456,29 @@ function itemSection(label,items,isNote=false){
   });
   return h+`</div>`;
 }
-
-function enterSubject(id,name){
-  cPath=[{id,name,type:'subject',subjectId:id}];
-  renderContentLevel();
+function adminNoteSection(items){
+  let h=`<div class="sec-row" style="margin-top:18px"><span class="sec-lbl">Class Notes</span><span class="sec-cnt">${items.length}</span></div>`;
+  if(!items.length)return h+`<div class="empty" style="padding:10px 0 16px"><p>None yet.</p></div>`;
+  h+=`<div class="flist">`;
+  items.forEach((n,i)=>{
+    h+=`<div class="frow note-row" style="animation-delay:${i*.03}s">
+      <div class="frow-icon">${IC.note}</div>
+      <div class="frow-body" style="flex:1">
+        <div class="frow-name">${esc(n.name)}</div>
+        ${n.content?`<div style="font-size:.77rem;color:var(--t2);margin-top:4px;line-height:1.5;white-space:pre-wrap">${esc(n.content.substring(0,120))}${n.content.length>120?'…':''}</div>`:''}
+      </div>
+      <div class="frow-r">
+        <button class="btn btn-ghost btn-sm" onclick="editItem('${n.id}')">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('${n.id}')">Del</button>
+      </div>
+    </div>`;
+  });
+  return h+`</div>`;
 }
-function enterNode(id,name,type){
-  const subjectId=cPath[0].id;
-  cPath=[...cPath,{id,name,type,subjectId}];
-  renderContentLevel();
-}
+function enterSubject(id,name){cPath=[{id,name,type:'subject',subjectId:id}];renderContentLevel();}
+function enterNode(id,name,type){const subjectId=cPath[0].id;cPath=[...cPath,{id,name,type,subjectId}];renderContentLevel();}
 
-/* ── Add / Edit Subject ── */
+/* ADD/EDIT SUBJECT */
 function openAddSubject(){
   $('mo-title').textContent='New Subject';
   $('mo-body').innerHTML=`
@@ -454,25 +486,25 @@ function openAddSubject(){
     <div class="fpair">
       <div class="fg"><label>Subject Code *</label>
         <input class="fi" id="sc" placeholder="e.g. ENG11" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9_]/g,'')" style="text-transform:uppercase"/>
-        <span class="fi-hint">Unique ID. Letters, numbers, underscore only. Cannot be changed.</span>
+        <span class="fi-hint">Unique ID — letters, numbers, underscore only. Cannot be changed later.</span>
       </div>
-      <div class="fg"><label>Description <span style="opacity:.45;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label>
-        <input class="fi" id="sd" placeholder="Brief description…" autocomplete="off"/>
+      <div class="fg"><label>Description <span style="opacity:.4;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label>
+        <input class="fi" id="sd" placeholder="e.g. ISC Board" autocomplete="off"/>
       </div>
     </div>
-    <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="saveNewSubject()">Create Subject</button></div>`;
+    <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="saveNewSubject()">Create</button></div>`;
   openMo();setTimeout(()=>$('sn')?.focus(),60);
 }
 async function saveNewSubject(){
   const name=$('sn').value.trim(),code=$('sc').value.trim(),desc=$('sd').value.trim();
   if(!name){toast('Name required.','err');return;}
   if(!code){toast('Code required.','err');return;}
-  if(!/^[A-Z0-9_]+$/.test(code)){toast('Code: letters, numbers, underscore only.','err');return;}
+  if(!/^[A-Z0-9_]+$/.test(code)){toast('Code: letters/numbers/underscore only.','err');return;}
   const ex=await db.collection('subjects').doc(code).get();
   if(ex.exists){toast('Code already exists.','err');return;}
   try{
     const cnt=(await db.collection('subjects').get()).size;
-    await db.collection('subjects').doc(code).set({name,code,description:desc,order:cnt,meetLink:'',meetSchedule:'',meetDay:5,meetHour:20,meetMinute:30,meetActive:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    await db.collection('subjects').doc(code).set({name,code,description:desc,order:cnt,meetLink:'',meetSchedule:'',meetDay:5,meetHour:20,meetMinute:30,meetState:'inactive',meetStateSetAt:null,meetAutoEndAt:null,meetDuration:90,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
     closeMo();toast('Subject created!','ok');renderSubjects();
   }catch(e){toast(e.message,'err');}
 }
@@ -483,7 +515,7 @@ function editSubject(id){
     $('mo-body').innerHTML=`
       <div class="fg"><label>Name *</label><input class="fi" id="sn" value="${esc(s.name)}"/></div>
       <div class="fg"><label>Description</label><input class="fi" id="sd" value="${esc(s.description||'')}"/></div>
-      <div class="fg"><label>Code (read-only)</label><input class="fi" value="${esc(s.code||s.id)}" disabled style="opacity:.45;cursor:not-allowed"/><span class="fi-hint">Code is the document ID and cannot be changed.</span></div>
+      <div class="fg"><label>Code (read-only)</label><input class="fi" value="${esc(s.code||s.id)}" disabled style="opacity:.4;cursor:not-allowed"/><span class="fi-hint">Code = document ID. Cannot be changed.</span></div>
       <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="updateSubject('${id}')">Save</button></div>`;
     openMo();
   }).catch(e=>toast(e.message,'err'));
@@ -494,7 +526,7 @@ async function updateSubject(id){
   try{await db.collection('subjects').doc(id).update({name,description:desc});closeMo();toast('Updated!','ok');renderSubjects();}catch(e){toast(e.message,'err');}
 }
 async function deleteSubject(id){
-  if(!confirm(`Delete subject "${id}" and ALL its content? This cannot be undone.`))return;
+  if(!confirm(`Delete subject "${id}" and ALL its content? Cannot be undone.`))return;
   try{
     const snap=await db.collection('items').where('subjectId','==',id).get();
     const batch=db.batch();snap.forEach(d=>batch.delete(d.ref));
@@ -504,62 +536,20 @@ async function deleteSubject(id){
   }catch(e){toast(e.message,'err');}
 }
 
-/* ── Meet per subject ── */
-function editSubjectMeet(id){
-  db.collection('subjects').doc(id).get().then(d=>{
-    const s={id:d.id,...d.data()};
-    const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    $('mo-title').textContent=`Meet — ${esc(s.name)}`;
-    $('mo-body').innerHTML=`
-      <div class="info-box blue"><strong>${esc(s.name)}</strong> — This meet link is only for this subject.</div>
-      <div class="fg"><label>Google Meet URL</label>
-        <input class="fi" id="ml" value="${esc(s.meetLink||'')}" placeholder="https://meet.google.com/xxx-xxxx-xxx"/>
-      </div>
-      <div class="fg"><label>Schedule Label</label>
-        <input class="fi" id="ms" value="${esc(s.meetSchedule||'')}" placeholder="e.g. Every Friday at 8:30 PM IST"/>
-      </div>
-      <div class="fpair">
-        <div class="fg"><label>Day</label>
-          <select class="fsel" id="md">${days.map((d,i)=>`<option value="${i}" ${(s.meetDay??5)==i?'selected':''}>${d}</option>`).join('')}</select>
-        </div>
-        <div class="fg"><label>Time (IST)</label>
-          <input class="fi" type="time" id="mt" value="${String(s.meetHour??20).padStart(2,'0')}:${String(s.meetMinute??30).padStart(2,'0')}"/>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;padding:6px 0">
-        <input type="checkbox" id="ma" ${s.meetActive?'checked':''} style="width:16px;height:16px;accent-color:var(--gold);cursor:pointer"/>
-        <label for="ma" style="font-size:.84rem;color:var(--t1);cursor:pointer;text-transform:none;letter-spacing:0;font-weight:400">Class is currently active (show Join button to students)</label>
-      </div>
-      <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="saveMeet('${id}')">Save</button></div>`;
-    openMo();
-  }).catch(e=>toast(e.message,'err'));
-}
-async function saveMeet(id){
-  const link=$('ml').value.trim(),sched=$('ms').value.trim(),active=$('ma').checked;
-  const tp=$('mt').value.split(':'),hour=parseInt(tp[0]),minute=parseInt(tp[1]),day=parseInt($('md').value);
-  try{
-    await db.collection('subjects').doc(id).update({meetLink:link,meetSchedule:sched,meetDay:day,meetHour:hour,meetMinute:minute,meetActive:active});
-    closeMo();toast('Meet settings saved!','ok');
-    // If on meet panel, refresh it
-    if(panel==='meet')renderMeet();
-  }catch(e){toast(e.message,'err');}
-}
-
-/* ── Add Item inside subject/folder/chapter ── */
+/* ADD/EDIT ITEMS */
 function openAddItem(){
   if(!cPath.length){openAddSubject();return;}
   const cur=cPath[cPath.length-1];
-  const subjectId=cPath[0].id;
-  const parentId=cur.id;
+  const subjectId=cPath[0].id,parentId=cur.id;
   const isChapter=cur.type==='chapter';
   let types=isChapter
     ?`<option value="pdf">Textbook PDF</option><option value="studymaterial">Study Material</option><option value="recording">Class Recording</option><option value="note">Class Note / Summary</option><option value="link">External Link</option>`
-    :`<option value="folder">Folder / Sub-Subject</option><option value="chapter">Chapter</option><option value="pdf">PDF</option><option value="studymaterial">Study Material</option><option value="recording">Recording</option><option value="note">Class Note</option><option value="link">Link</option>`;
+    :`<option value="folder">Folder / Sub-Subject</option><option value="chapter">Chapter</option><option value="pdf">PDF</option><option value="studymaterial">Study Material</option><option value="recording">Recording</option><option value="note">Note</option><option value="link">Link</option>`;
   $('mo-title').textContent='Add Item';
   $('mo-body').innerHTML=`
     <div class="fi-tag">Adding inside: ${esc(cPath.map(p=>p.name).join(' › '))}</div>
     <div class="fg"><label>Type *</label><select class="fsel" id="it-t" onchange="toggleItemFields()">${types}</select></div>
-    <div class="fg"><label>Name *</label><input class="fi" id="it-n" placeholder="e.g. Chapter 1 · Introduction" autocomplete="off"/></div>
+    <div class="fg"><label>Name *</label><input class="fi" id="it-n" placeholder="e.g. Chapter 1 · The Voice of the Rain" autocomplete="off"/></div>
     <div class="fg" id="it-url-g" style="display:none">
       <label>Google Drive Link</label>
       <input class="fi" id="it-u" placeholder="https://drive.google.com/file/d/…"/>
@@ -568,11 +558,8 @@ function openAddItem(){
     <div class="fg" id="it-cnt-g" style="display:none">
       <label>Note Content</label>
       <textarea class="fta" id="it-c" placeholder="Paste class summary, key points or notes here…" style="min-height:100px"></textarea>
-      <span class="fi-hint">You can also optionally attach a Drive link above.</span>
     </div>
-    <div class="fg"><label>Description <span style="opacity:.45;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label>
-      <input class="fi" id="it-d" placeholder="Brief description…" autocomplete="off"/>
-    </div>
+    <div class="fg"><label>Description <span style="opacity:.4;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label><input class="fi" id="it-d" placeholder="Brief description…" autocomplete="off"/></div>
     <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="saveItem('${subjectId}','${parentId}')">Add</button></div>`;
   toggleItemFields();openMo();setTimeout(()=>$('it-n')?.focus(),60);
 }
@@ -591,10 +578,7 @@ async function saveItem(subjectId,parentId){
   const now=firebase.firestore.FieldValue.serverTimestamp();
   const data={name,type,description:desc,content,subjectId,parentId,status:'approved',createdAt:now,updatedAt:now,createdBy:AU.email};
   if(url)data.url=gdEmbed(url);
-  try{
-    await db.collection('items').add(data);
-    closeMo();toast(`"${name}" added!`,'ok');renderContentLevel();
-  }catch(e){toast('Error: '+e.message,'err');console.error(e);}
+  try{await db.collection('items').add(data);closeMo();toast(`"${name}" added!`,'ok');renderContentLevel();}catch(e){toast('Error: '+e.message,'err');console.error(e);}
 }
 function editItem(id){
   db.collection('items').doc(id).get().then(d=>{
@@ -629,42 +613,191 @@ async function deleteItem(id){
 }
 async function delRec(id){const snap=await db.collection('items').where('parentId','==',id).get();for(const d of snap.docs)await delRec(d.id);await db.collection('items').doc(id).delete();}
 
-/* ══════════════ MEET SETTINGS ══════════════ */
+/* ══════════════════════════════════════════
+   MEET SETTINGS PANEL — Real-time listeners
+   State stored on /subjects/{id}:
+     meetState: 'inactive'|'soon'|'live'
+     meetStateSetAt: server timestamp
+     meetAutoEndAt: server timestamp (for live)
+     meetDuration: minutes
+     meetLink, meetSchedule, meetDay/Hour/Minute
+══════════════════════════════════════════ */
 async function renderMeet(){
   $('ct').innerHTML=ld();
   try{
     const snap=await db.collection('subjects').orderBy('order').get();
-    let h=`<div class="info-box blue" style="margin-bottom:20px"><strong>Per-Subject Meet Links</strong> — Each subject has its own Google Meet link, schedule and active status. Students only see their assigned subject's meet link.</div>`;
-    if(snap.empty)h+=`<div class="empty"><p>No subjects yet.</p></div>`;
+    if(snap.empty){$('ct').innerHTML=`<div class="empty"><p>No subjects yet. Create subjects first.</p></div>`;return;}
+    let h=`<div class="info-box blue" style="margin-bottom:20px"><strong>Per-Subject Meet Links.</strong> Each subject has its own Google Meet link, schedule and live state. Changes sync immediately to all users.</div>`;
     snap.forEach(d=>{
       const s={id:d.id,...d.data()};
-      const live=s.meetActive;
-      h+=`<div class="meet-cfg">
-        <div class="meet-cfg-head">
-          <div style="display:flex;align-items:center;gap:9px">
-            <div class="meet-status-dot ${live?'live':''}"></div>
-            <div>
-              <div class="meet-cfg-title">${esc(s.name)}</div>
-              <span class="meet-cfg-code">${esc(s.code||s.id)}</span>
-            </div>
-          </div>
-          <span style="font-size:.7rem;font-family:var(--mono);color:${live?'var(--sage)':'var(--t3)'}">${live?'ACTIVE':'INACTIVE'}</span>
-        </div>
-        ${s.meetLink?`<div class="meet-url-display">${esc(s.meetLink)}</div>`:`<div style="font-size:.72rem;color:var(--t3);font-family:var(--mono);margin-bottom:6px">No meet link configured</div>`}
-        ${s.meetSchedule?`<div class="meet-sched-display">${IC.clock} ${esc(s.meetSchedule)}</div>`:''}
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-gold btn-sm" onclick="editSubjectMeet('${s.id}')">Configure</button>
-          ${live?`<button class="btn btn-danger btn-sm" onclick="setActive('${s.id}',false)">End Class</button>`:`<button class="btn btn-ok btn-sm" onclick="setActive('${s.id}',true)">Start Class</button>`}
-          ${s.meetLink?`<a href="${esc(s.meetLink)}" target="_blank" class="btn btn-sky btn-sm">Open Meet</a>`:''}
-        </div>
-      </div>`;
+      h+=`<div class="meet-card-admin" id="mca-${s.id}">${buildMeetCard(s)}</div>`;
     });
     h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus Admin</div>`;
     $('ct').innerHTML=h;
+    // Subscribe real-time listeners for each subject
+    snap.forEach(d=>{
+      const id=d.id;
+      if(meetListeners[id])meetListeners[id](); // unsubscribe existing
+      meetListeners[id]=db.collection('subjects').doc(id).onSnapshot(doc=>{
+        const el=$(`mca-${id}`);
+        if(el&&doc.exists)el.innerHTML=buildMeetCard({id:doc.id,...doc.data()});
+      });
+    });
   }catch(e){$('ct').innerHTML=`<div class="empty"><p>${e.message}</p></div>`;}
 }
-async function setActive(id,active){
-  try{await db.collection('subjects').doc(id).update({meetActive:active});toast(active?'Class started!':'Class ended.','ok');renderMeet();}catch(e){toast(e.message,'err');}
+
+function buildMeetCard(s){
+  const st=effectiveMeetState(s);
+  const stCls=meetStateClass(st);
+  const stLbl=meetStateLabel(st);
+  const now=Date.now();
+  let extraInfo='';
+  if(st==='live'&&s.meetAutoEndAt){
+    const endMs=s.meetAutoEndAt.toMillis?s.meetAutoEndAt.toMillis():Number(s.meetAutoEndAt);
+    const rem=Math.max(0,Math.ceil((endMs-now)/60000));
+    extraInfo=`<div class="mca-extra">Auto-ends in ${rem} min · ${new Date(endMs).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div>`;
+  }
+  if(st==='soon'&&s.meetStateSetAt){
+    const setMs=s.meetStateSetAt.toMillis?s.meetStateSetAt.toMillis():Number(s.meetStateSetAt);
+    const expMs=setMs+15*60*1000;
+    const rem=Math.max(0,Math.ceil((expMs-now)/60000));
+    extraInfo=`<div class="mca-extra">Starting soon — expires in ${rem} min</div>`;
+  }
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const dayLbl=days[s.meetDay??5];
+  const timeLbl=`${String(s.meetHour??20).padStart(2,'0')}:${String(s.meetMinute??30).padStart(2,'0')} IST`;
+  return `
+    <div class="mca-head">
+      <div class="mca-info">
+        <div class="mca-title">
+          ${esc(s.name)}
+          <span class="mca-code">${esc(s.code||s.id)}</span>
+        </div>
+        ${s.meetLink?`<div class="mca-url">${esc(s.meetLink)}</div>`:`<div class="mca-url" style="color:var(--t3)">No meet link configured</div>`}
+        <div class="mca-sched">${IC.clock} ${s.meetSchedule||`${dayLbl} ${timeLbl}`}</div>
+        ${extraInfo}
+      </div>
+      <div>
+        <span class="mca-status ${stCls}"><span class="dot"></span>${stLbl}</span>
+      </div>
+    </div>
+    <div class="mca-btns">
+      ${st==='inactive'?`
+        <button class="btn btn-ok btn-sm" onclick="startClass('${s.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Start Class
+        </button>
+        <button class="btn btn-gold btn-sm" onclick="markStartingSoon('${s.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Starting Soon
+        </button>`:''}
+      ${st==='soon'?`
+        <button class="btn btn-ok btn-sm" onclick="startClass('${s.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Go Live Now
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="endClass('${s.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+          Cancel
+        </button>`:''}
+      ${st==='live'?`
+        <button class="btn btn-danger btn-sm" onclick="endClass('${s.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+          End Class
+        </button>`:''}
+      <button class="btn btn-sky btn-sm" onclick="openMeetConfig('${s.id}')">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Configure
+      </button>
+      ${s.meetLink?`<a href="${esc(s.meetLink)}" target="_blank" class="btn btn-ghost btn-sm">Open Meet</a>`:''}
+    </div>`;
+}
+
+/* Meet state actions — write directly to Firestore; onSnapshot updates UI */
+async function startClass(id){
+  $('mo-title').textContent='Start Class';
+  $('mo-body').innerHTML=`
+    <div class="info-box blue">Class will go <strong>Live</strong> immediately. Students will see the Join button.</div>
+    <div class="fg"><label>Duration (minutes)</label>
+      <input class="fi" type="number" id="dur" value="90" min="15" max="480" placeholder="90"/>
+      <span class="fi-hint">Class will automatically stop showing as Live after this duration.</span>
+    </div>
+    <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-ok" onclick="confirmStartClass('${id}')">Start Class</button></div>`;
+  openMo();
+}
+async function confirmStartClass(id){
+  const dur=parseInt($('dur').value)||90;
+  const now=firebase.firestore.FieldValue.serverTimestamp();
+  const autoEndAt=new Date(Date.now()+dur*60*1000);
+  try{
+    await db.collection('subjects').doc(id).update({
+      meetState:'live',
+      meetStateSetAt:now,
+      meetDuration:dur,
+      meetAutoEndAt:firebase.firestore.Timestamp.fromDate(autoEndAt)
+    });
+    closeMo();toast('Class started! Students can now join.','ok');
+  }catch(e){toast(e.message,'err');}
+}
+async function markStartingSoon(id){
+  try{
+    await db.collection('subjects').doc(id).update({
+      meetState:'soon',
+      meetStateSetAt:firebase.firestore.FieldValue.serverTimestamp(),
+      meetAutoEndAt:null
+    });
+    toast('Marked as "Starting Soon" — auto-expires in 15 min.','ok');
+  }catch(e){toast(e.message,'err');}
+}
+async function endClass(id){
+  try{
+    await db.collection('subjects').doc(id).update({
+      meetState:'inactive',
+      meetStateSetAt:firebase.firestore.FieldValue.serverTimestamp(),
+      meetAutoEndAt:null
+    });
+    toast('Class ended.','ok');
+  }catch(e){toast(e.message,'err');}
+}
+
+/* Meet configuration modal */
+function openMeetConfig(id){
+  db.collection('subjects').doc(id).get().then(d=>{
+    const s={id:d.id,...d.data()};
+    const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    $('mo-title').textContent=`Meet Config — ${esc(s.name)}`;
+    $('mo-body').innerHTML=`
+      <div class="fi-tag">Subject: ${esc(s.code||s.id)} — This link is only for this subject</div>
+      <div class="fg"><label>Google Meet URL</label>
+        <input class="fi" id="ml" value="${esc(s.meetLink||'')}" placeholder="https://meet.google.com/xxx-xxxx-xxx"/>
+      </div>
+      <div class="fg"><label>Schedule Label (shown to students)</label>
+        <input class="fi" id="ms" value="${esc(s.meetSchedule||'')}" placeholder="e.g. Every Friday at 8:30 PM IST"/>
+      </div>
+      <div class="fpair">
+        <div class="fg"><label>Recurring Day</label>
+          <select class="fsel" id="md">${days.map((d,i)=>`<option value="${i}" ${(s.meetDay??5)==i?'selected':''}>${d}</option>`).join('')}</select>
+        </div>
+        <div class="fg"><label>Recurring Time (IST)</label>
+          <input class="fi" type="time" id="mt" value="${String(s.meetHour??20).padStart(2,'0')}:${String(s.meetMinute??30).padStart(2,'0')}"/>
+        </div>
+      </div>
+      <div class="fg"><label>Default Duration (minutes)</label>
+        <input class="fi" type="number" id="mdur" value="${s.meetDuration||90}" min="15" max="480"/>
+        <span class="fi-hint">Used as default when you click "Start Class".</span>
+      </div>
+      <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="saveMeetConfig('${id}')">Save Config</button></div>`;
+    openMo();
+  }).catch(e=>toast(e.message,'err'));
+}
+async function saveMeetConfig(id){
+  const link=$('ml').value.trim(),sched=$('ms').value.trim();
+  const tp=$('mt').value.split(':'),hour=parseInt(tp[0]),minute=parseInt(tp[1]),day=parseInt($('md').value);
+  const dur=parseInt($('mdur').value)||90;
+  try{
+    await db.collection('subjects').doc(id).update({meetLink:link,meetSchedule:sched,meetDay:day,meetHour:hour,meetMinute:minute,meetDuration:dur});
+    closeMo();toast('Meet config saved!','ok');
+  }catch(e){toast(e.message,'err');}
 }
 
 /* ══════════════ FILE REQUESTS ══════════════ */
@@ -722,26 +855,25 @@ async function denyAccess(reqId){
   try{await db.collection('accessRequests').doc(reqId).update({status:'denied'});toast('Denied.');renderRequests();}catch(e){toast(e.message,'err');}
 }
 
-/* ── VIEWER ── */
+/* VIEWER */
 function openViewer(url,name){if(!url){toast('No URL.','err');return;}$('vt').textContent=name;$('vf').src=gdEmbed(url);$('viewer').style.display='flex';}
 function closeViewer(){$('viewer').style.display='none';$('vf').src='';}
 
-/* ── MODAL ── */
+/* MODAL */
 function openMo(){$('modal').style.display='flex';}
 function closeMo(){$('modal').style.display='none';}
 $('modal').addEventListener('click',e=>{if(e.target===$('modal'))closeMo();});
 
-/* ── MOBILE ── */
+/* MOBILE */
 $('tb-ham').addEventListener('click',()=>$('sb').classList.toggle('open'));
 $('sb-x').addEventListener('click',()=>$('sb').classList.remove('open'));
 
-/* ── GLOBALS ── */
+/* GLOBALS */
 window.goPanel=goPanel;window.handleAdd=handleAdd;window.doSignOut=doSignOut;
 window.approveUser=approveUser;window.rejectUser=rejectUser;window.editUser=editUser;window.saveUser=saveUser;
 window.openAddSubject=openAddSubject;window.saveNewSubject=saveNewSubject;window.editSubject=editSubject;window.updateSubject=updateSubject;window.deleteSubject=deleteSubject;
-window.editSubjectMeet=editSubjectMeet;window.saveMeet=saveMeet;window.setActive=setActive;
-window.enterSubject=enterSubject;window.enterNode=enterNode;
-window.openAddItem=openAddItem;window.toggleItemFields=toggleItemFields;window.saveItem=saveItem;window.editItem=editItem;window.updateItem=updateItem;window.approveItem=approveItem;window.deleteItem=deleteItem;
+window.enterSubject=enterSubject;window.enterNode=enterNode;window.openAddItem=openAddItem;window.toggleItemFields=toggleItemFields;window.saveItem=saveItem;window.editItem=editItem;window.updateItem=updateItem;window.approveItem=approveItem;window.deleteItem=deleteItem;
+window.openMeetConfig=openMeetConfig;window.saveMeetConfig=saveMeetConfig;window.startClass=startClass;window.confirmStartClass=confirmStartClass;window.markStartingSoon=markStartingSoon;window.endClass=endClass;
 window.rejectFile=rejectFile;window.grantAccess=grantAccess;window.denyAccess=denyAccess;
 window.openViewer=openViewer;window.closeViewer=closeViewer;window.openMo=openMo;window.closeMo=closeMo;
 </script>
