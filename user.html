@@ -8,8 +8,108 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="shared.css"/>
 <style>
-body{overflow:hidden;height:100vh}
-.app{display:flex;height:100vh;position:relative;z-index:1}
+body { overflow: hidden; height: 100vh }
+.app { display: flex; height: 100vh; position: relative; z-index: 1 }
+
+/* ── Meet state cards ── */
+.meet-outer {
+  border-radius: var(--r2); overflow: hidden; margin-bottom: 16px;
+  border: 1px solid rgba(91,138,170,.2);
+  background: linear-gradient(135deg, rgba(18,42,58,.65), rgba(12,9,22,.88));
+  position: relative; transition: border-color .3s;
+}
+.meet-outer.state-live   { border-color: rgba(107,158,122,.35); background: linear-gradient(135deg, rgba(14,42,28,.7), rgba(12,9,22,.9)); }
+.meet-outer.state-soon   { border-color: rgba(201,168,76,.35);  background: linear-gradient(135deg, rgba(40,34,14,.7), rgba(12,9,22,.9)); }
+.meet-outer.state-waiting{ border-color: rgba(91,138,170,.25); }
+.meet-outer.state-inactive{ border-color: rgba(255,255,255,.07); }
+.meet-outer::before { content:''; position:absolute; inset:0; pointer-events:none; border-radius: inherit; }
+.meet-outer.state-live::before   { background: linear-gradient(135deg, rgba(107,158,122,.06), transparent); }
+.meet-outer.state-soon::before   { background: linear-gradient(135deg, rgba(201,168,76,.06), transparent); }
+
+.meet-row { display: flex; align-items: stretch }
+.meet-col {
+  width: 66px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  border-right: 1px solid rgba(255,255,255,.07); padding: 16px 0;
+  background: rgba(26,115,232,.07);
+}
+.meet-logo {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, #1a73e8, #34a853);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(26,115,232,.3);
+  transition: box-shadow .3s;
+}
+.state-live .meet-logo   { background: linear-gradient(135deg, #1b8a4a, #2db872); box-shadow: 0 4px 18px rgba(43,184,114,.35); }
+.state-soon .meet-logo   { background: linear-gradient(135deg, #a07c2e, #e2c97e); box-shadow: 0 4px 18px rgba(201,168,76,.35); }
+
+.meet-body { flex: 1; padding: 16px 18px 14px; min-width: 0 }
+.meet-badges { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; flex-wrap: wrap }
+.meet-badge {
+  font-size: .58rem; font-family: var(--mono); letter-spacing: .08em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 99px;
+}
+.badge-gmeet { color: var(--sky); background: rgba(91,138,170,.1); border: 1px solid rgba(91,138,170,.2) }
+.badge-live  { color: var(--sage); background: rgba(107,158,122,.14); border: 1px solid rgba(107,158,122,.28); animation: badge-pulse 2s ease infinite }
+.badge-soon  { color: var(--gold); background: rgba(201,168,76,.14); border: 1px solid rgba(201,168,76,.28) }
+.badge-wait  { color: var(--sky);  background: rgba(91,138,170,.1); border: 1px solid rgba(91,138,170,.2) }
+@keyframes badge-pulse { 0%,100%{ opacity:1 } 50%{ opacity:.6 } }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sage); flex-shrink: 0; animation: ldot 2s ease infinite }
+.soon-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0 }
+@keyframes ldot { 0%,100%{box-shadow:0 0 0 2px rgba(107,158,122,.2)} 50%{box-shadow:0 0 0 5px rgba(107,158,122,.08)} }
+.meet-title { font-size: .96rem; font-weight: 600; color: var(--t0); margin-bottom: 3px }
+.meet-sched { font-size: .69rem; color: var(--t2); font-family: var(--mono); display: flex; align-items: center; gap: 5px; margin-top: 3px }
+.meet-desc  { margin-top: 9px; padding: 8px 11px; border-radius: 8px; background: rgba(255,255,255,.04); border-left: 2px solid rgba(201,168,76,.28); font-size: .74rem; color: var(--t1); line-height: 1.55 }
+.meet-extra { margin-top: 7px; font-size: .69rem; color: var(--t2); font-family: var(--mono) }
+.meet-extra.urgent { color: var(--gold) }
+.meet-r { padding: 16px 16px 16px 10px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 9px; flex-shrink: 0; min-width: 120px }
+.btn-join {
+  display: flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 10px;
+  color: #fff; border: none; font-size: .83rem; font-weight: 600; transition: all .2s;
+  white-space: nowrap; box-shadow: 0 4px 14px rgba(26,115,232,.3); font-family: var(--sans);
+  background: linear-gradient(135deg, #1a73e8, #1558b0);
+}
+.btn-join:hover { transform: translateY(-2px); box-shadow: 0 7px 22px rgba(26,115,232,.42) }
+.btn-join.soon-btn { background: linear-gradient(135deg, rgba(201,168,76,.35), rgba(160,124,46,.35)); border: 1px solid rgba(201,168,76,.4); box-shadow: none; color: var(--goldXL) }
+.btn-join.soon-btn:hover { background: linear-gradient(135deg, rgba(201,168,76,.45), rgba(160,124,46,.45)); transform: translateY(-1px) }
+.btn-join.wait-btn { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); box-shadow: none; color: var(--t2); cursor: not-allowed }
+.btn-join.wait-btn:hover { transform: none }
+.btn-join.off-btn  { background: rgba(255,255,255,.04); border: 1px solid var(--border); box-shadow: none; color: var(--t3); cursor: not-allowed }
+.btn-join.off-btn:hover { transform: none }
+.cd-txt { font-size: .63rem; font-family: var(--mono); color: var(--t3); text-align: right; line-height: 1.4 }
+
+/* Recent activity strip */
+.activity-strip { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px }
+.act-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--r); background: var(--glass); border: 1px solid var(--border); transition: border-color .18s }
+.act-item:hover { border-color: var(--borderH) }
+.act-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0 }
+.act-txt { font-size: .8rem; color: var(--t1); flex: 1 }
+.act-ts  { font-size: .62rem; color: var(--t3); font-family: var(--mono) }
+
+/* Quick nav cards */
+.quick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 9px; margin-bottom: 22px }
+.quick-card {
+  padding: 16px 15px; border-radius: var(--r2); border: 1px solid var(--border); background: var(--glass);
+  cursor: pointer; transition: all .2s; display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden
+}
+.quick-card::before { content:''; position:absolute; inset:0; opacity:0; background: radial-gradient(circle at 60% 30%, rgba(201,168,76,.08), transparent 60%); transition: opacity .2s }
+.quick-card:hover { border-color: var(--borderH); transform: translateY(-2px); box-shadow: 0 10px 34px rgba(0,0,0,.4) }
+.quick-card:hover::before { opacity: 1 }
+.quick-card-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--goldBG); border: 1px solid var(--borderH); display: flex; align-items: center; justify-content: center; position: relative; z-index: 1 }
+.quick-card-icon svg { color: var(--gold) }
+.quick-card-name { font-size: .83rem; font-weight: 500; color: var(--t0); position: relative; z-index: 1 }
+.quick-card-sub  { font-size: .66rem; color: var(--t2); font-family: var(--mono); position: relative; z-index: 1 }
+
+/* Announcement / Desc banner */
+.desc-banner { border-radius: var(--r); padding: 12px 16px; background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.18); margin-top: 8px; font-size: .78rem; color: var(--t1); line-height: 1.6 }
+.desc-banner strong { color: var(--gold) }
+
+/* Upcoming class chip */
+.next-chip { display: inline-flex; align-items: center; gap: 6px; font-size: .67rem; font-family: var(--mono); color: var(--t2); background: var(--glass); border: 1px solid var(--border); border-radius: 99px; padding: 3px 10px; margin-top: 4px }
+
+/* Access locked overlay on card */
+.card-locked { opacity: .4; cursor: not-allowed; filter: grayscale(.5) }
+.card-locked:hover { transform: none !important; box-shadow: none !important; border-color: var(--border) !important }
+.card-locked::before { display: none !important }
 </style>
 </head>
 <body>
@@ -20,10 +120,14 @@ body{overflow:hidden;height:100vh}
   <aside class="sb" id="sb">
     <div class="sb-head">
       <div class="sb-logo">
-        <div class="sb-logo-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linejoin="round"><polygon points="12,2 22,20 2,20"/></svg></div>
+        <div class="sb-logo-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linejoin="round"><polygon points="12,2 22,20 2,20"/></svg>
+        </div>
         <span class="sb-logo-text">Nexus</span>
       </div>
-      <button class="sb-x ib" id="sb-x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <button class="sb-x ib" id="sb-x">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
     <nav class="sb-nav" id="sb-nav">
       <span class="sb-label">Navigation</span>
@@ -48,12 +152,10 @@ body{overflow:hidden;height:100vh}
         </div>
         <div class="acct-btns">
           <button class="acct-btn" onclick="openAcctModal()">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Account
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Account
           </button>
           <button class="acct-btn danger" onclick="doSignOut()">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Sign Out
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out
           </button>
         </div>
       </div>
@@ -108,18 +210,14 @@ body{overflow:hidden;height:100vh}
 <script>
 /* ═══════════════════════════════════════════
    NEXUS USER DASHBOARD · by Aarav Sinha
-   
-   DATA MODEL (read from Firestore):
-   /subjects/{code}  — subject doc with meet config
-     .name, .code, .meetLink, .meetSchedule
-     .meetDay, .meetHour, .meetMinute, .meetActive
-   
-   /items/{id}       — all content
-     .subjectId      — which top-level subject this belongs to
-     .parentId       — null = root of subject, else parent folder/chapter
-     .type           — folder | chapter | pdf | studymaterial | recording | note | link
-     .status         — approved | pending
-     .suggestedByName — set when user suggests a file
+
+   KEY: Real-time Firestore listeners for meet state.
+   Each subject doc has:
+     meetState: 'inactive'|'soon'|'live'
+     meetStateSetAt: Timestamp
+     meetAutoEndAt: Timestamp (live ends here)
+     meetDuration: minutes
+     meetLink, meetSchedule, meetDay/Hour/Minute
 ═══════════════════════════════════════════ */
 const FC={apiKey:"AIzaSyCqEEBANVyt-ybQD8z-pys2V-07-lxEWjA",authDomain:"nexus-705ef.firebaseapp.com",projectId:"nexus-705ef",storageBucket:"nexus-705ef.firebasestorage.app",messagingSenderId:"982944171585",appId:"1:982944171585:web:de65b6827ca769565ba8c0"};
 const ADMIN="aaravhfs@gmail.com",WA="919073121019",EMAIL="aaravhfs@gmail.com";
@@ -128,11 +226,13 @@ const auth=firebase.auth(),db=firebase.firestore();
 const $=id=>document.getElementById(id);
 
 let CU=null,UD=null;
-let path=[];          // navigation stack: [{id,name,type,subjectId}]
-let allSubjects=[];   // all subjects from /subjects
-let userSubjects=[];  // subject codes the user has access to
-let homeTab='subjects';
-let meetTimerId=null;
+let path=[],allSubjects=[],userSubjects=[],homeTab='subjects';
+// Real-time listeners — stored so we can unsubscribe
+let subjectListeners={};  // id -> unsubscribe fn
+// Live subjects data (kept fresh by listeners)
+let liveSubjects={};      // id -> subject data
+// Countdown interval
+let cdInterval=null;
 
 /* ── ICONS ── */
 const IC={
@@ -150,6 +250,7 @@ const IC={
   plus:`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
   edit:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
   out:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`,
+  chat:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
 };
 function tIcon(t){return{folder:IC.folder,subject:IC.book,chapter:IC.chapter,pdf:IC.pdf,studymaterial:IC.study,recording:IC.video,note:IC.note,link:IC.link}[t]||IC.folder;}
 function tChip(t){return{pdf:'cr',studymaterial:'ck',recording:'cs',note:'cg',link:'cd',folder:'cd',subject:'cg',chapter:'cs'}[t]||'cd';}
@@ -159,7 +260,42 @@ function fmtD(ts){if(!ts)return'';const d=ts.toDate?ts.toDate():new Date(ts);ret
 function gdEmbed(url){if(!url)return'';const m=url.match(/\/file\/d\/([^/?\\s]+)/);if(m)return`https://drive.google.com/file/d/${m[1]}/preview`;return url;}
 function toast(m,t){const el=$('toast');el.textContent=m;el.className='toast show'+(t==='ok'?' ok':t==='err'?' err':'');clearTimeout(window._tt);window._tt=setTimeout(()=>el.classList.remove('show'),3400);}
 
-/* ═══ AUTH — renders inline, no separate loader screen ═══ */
+/* ── EFFECTIVE MEET STATE (mirrors admin logic) ── */
+function effectiveMeetState(s){
+  const st=s.meetState||'inactive';
+  const now=Date.now();
+  if(st==='live'){
+    if(s.meetAutoEndAt){
+      const endMs=s.meetAutoEndAt.toMillis?s.meetAutoEndAt.toMillis():Number(s.meetAutoEndAt);
+      if(now>=endMs)return'inactive';
+    }
+    return'live';
+  }
+  if(st==='soon'){
+    if(s.meetStateSetAt){
+      const setMs=s.meetStateSetAt.toMillis?s.meetStateSetAt.toMillis():Number(s.meetStateSetAt);
+      if(now>=setMs+15*60*1000)return'inactive';
+    }
+    return'soon';
+  }
+  return'inactive';
+}
+/* Is it the scheduled recurring time but class not started? */
+function isScheduledTime(s){
+  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+  const day=s.meetDay??5,h=s.meetHour??20,m=s.meetMinute??30;
+  const mins=ist.getHours()*60+ist.getMinutes(),cs=h*60+m;
+  return ist.getDay()===day&&mins>=cs-5&&mins<cs+120;
+}
+function getNextClass(s){
+  const day=s.meetDay??5,h=s.meetHour??20,m=s.meetMinute??30;
+  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+  let d=(day-ist.getDay()+7)%7;
+  if(d===0&&ist.getHours()*60+ist.getMinutes()>=h*60+m+120)d=7;
+  const n=new Date(ist);n.setDate(ist.getDate()+d);n.setHours(h,m,0,0);return n;
+}
+
+/* ── AUTH ── */
 auth.onAuthStateChanged(async u=>{
   if(!u){window.location.href='index.html';return;}
   if(u.email===ADMIN){window.location.href='admin.html';return;}
@@ -171,13 +307,10 @@ auth.onAuthStateChanged(async u=>{
     if(d.status==='pending'){await auth.signOut();window.location.href='login.html?msg=pending';return;}
     if(d.status==='rejected'){await auth.signOut();window.location.href='login.html?msg=rejected';return;}
     UD=d; userSubjects=d.subjects||[];
-    // Fire-and-forget last login update
     db.collection('users').doc(u.uid).set({lastLogin:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}).catch(()=>{});
-    // Populate UI
     const name=d.displayName||u.displayName||u.email||'User';
     const photo=d.photoURL||u.photoURL||'';
-    $('sb-nm').textContent=name;
-    $('sb-em').textContent=u.email||'';
+    $('sb-nm').textContent=name; $('sb-em').textContent=u.email||'';
     $('sb-role').textContent=d.role==='teacher'?'Teacher':'Student';
     $('tb-role').textContent=d.role==='teacher'?'Teacher':'Student';
     $('tb-role').style.display='';
@@ -188,34 +321,60 @@ auth.onAuthStateChanged(async u=>{
       $('sb-av').textContent=name.charAt(0).toUpperCase();
       $('tb-av').textContent=name.charAt(0).toUpperCase();
     }
-    // Load subjects then render
     await loadSubjects();
+    // Subscribe real-time listeners for user's subjects
+    subscribeToSubjects();
     navigate([]);
   }catch(e){
     console.error(e);
-    $('ct').innerHTML=`<div style="padding:40px;color:var(--rose);font-family:var(--mono);font-size:.8rem">Error loading: ${esc(e.message)}<br><br><a href="login.html" style="color:var(--gold)">← Back to Sign In</a></div>`;
+    $('ct').innerHTML=`<div style="padding:40px;color:var(--rose);font-family:var(--mono);font-size:.8rem">Error: ${esc(e.message)}<br><br><a href="login.html" style="color:var(--gold)">← Sign In</a></div>`;
   }
 });
 
+/* Load all subjects once, then subscribe for real-time updates */
 async function loadSubjects(){
   try{
     const snap=await db.collection('subjects').orderBy('order').get();
-    allSubjects=[];snap.forEach(d=>allSubjects.push({id:d.id,...d.data()}));
+    allSubjects=[];
+    snap.forEach(d=>{const s={id:d.id,...d.data()};allSubjects.push(s);liveSubjects[s.id]=s;});
     renderSidebar();
   }catch(e){console.warn('subjects:',e.message);}
+}
+function subscribeToSubjects(){
+  // Subscribe to ALL subjects so we get real-time meet state
+  db.collection('subjects').onSnapshot(snap=>{
+    snap.forEach(d=>{
+      const s={id:d.id,...d.data()};
+      liveSubjects[s.id]=s;
+      // Update allSubjects entry
+      const idx=allSubjects.findIndex(x=>x.id===s.id);
+      if(idx>=0)allSubjects[idx]=s; else allSubjects.push(s);
+    });
+    renderSidebar();
+    // If on meet tab, re-render meet cards
+    if(path.length===0&&homeTab==='meet'){
+      renderMeetCards();
+    }
+  });
 }
 function renderSidebar(){
   const mine=allSubjects.filter(s=>userSubjects.includes(s.id));
   $('subj-lbl').style.display=mine.length?'':'none';
-  $('sb-subjects').innerHTML=mine.map(s=>`
-    <button class="sbi" data-id="${s.id}" onclick="navToSubject('${s.id}','${esc(s.name).replace(/'/g,"\\'")}')">
-      ${IC.book}
-      <span class="nm">${esc(s.name)}</span>
-    </button>`).join('');
+  $('sb-subjects').innerHTML=mine.map(s=>{
+    const st=effectiveMeetState(liveSubjects[s.id]||s);
+    const dot=st==='live'?'<span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--sage);margin-right:5px;animation:ldot 2s ease infinite"></span>':st==='soon'?'<span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gold);margin-right:5px"></span>':'';
+    return`<button class="sbi" data-id="${s.id}" onclick="navToSubject('${s.id}','${esc(s.name).replace(/'/g,"\\'")}')">
+      ${IC.book}<span class="nm">${dot}${esc(s.name)}</span>
+    </button>`;
+  }).join('');
 }
-function doSignOut(){if(meetTimerId)clearInterval(meetTimerId);auth.signOut().then(()=>window.location.href='index.html');}
+function doSignOut(){
+  Object.values(subjectListeners).forEach(u=>u());
+  if(cdInterval)clearInterval(cdInterval);
+  auth.signOut().then(()=>window.location.href='index.html');
+}
 
-/* ═══ NAVIGATION ═══ */
+/* ── NAVIGATION ── */
 function navigate(p){
   path=p;renderBC();renderContent();
   const topId=p.length?p[0].id:null;
@@ -232,141 +391,200 @@ function renderBC(){
 }
 function setTab(t){homeTab=t;renderContent();}
 
-/* ═══ CONTENT RENDERER ═══ */
+/* ── CONTENT RENDERER ── */
 async function renderContent(){
+  if(cdInterval){clearInterval(cdInterval);cdInterval=null;}
   $('ct').innerHTML=`<div class="loading"><div class="spin"></div><span>Loading…</span></div>`;
   const depth=path.length,cur=depth?path[depth-1]:null;
-  // Chapter view
   if(cur&&cur.type==='chapter'){await renderChapter(cur);return;}
-  // Folder/Subject view
   if(cur){await renderFolder(cur);return;}
-  // Home
   await renderHome();
 }
 
-/* HOME */
+/* ── HOME ── */
 async function renderHome(){
   const first=(UD?.displayName||CU?.displayName||'').split(' ')[0]||'there';
-  const myCount=allSubjects.filter(s=>userSubjects.includes(s.id)).length;
-  let h=`<div class="hero"><div class="hero-eyebrow">Study Portal</div><h2>Welcome back, <em>${esc(first)}</em></h2><p class="hero-sub">Your organised space — textbooks, recordings, live classes and notes.</p></div>`;
-  h+=`<div class="stats-grid">
-    <div class="stat-card" style="animation-delay:.04s"><div class="stat-val">${myCount}</div><div class="stat-lbl">My Subjects</div></div>
-    <div class="stat-card" style="animation-delay:.08s"><div class="stat-val">${allSubjects.length}</div><div class="stat-lbl">Total Subjects</div></div>
+  const mine=allSubjects.filter(s=>userSubjects.includes(s.id));
+  // Count live/soon subjects
+  const liveCount=mine.filter(s=>{const st=effectiveMeetState(liveSubjects[s.id]||s);return st==='live'||st==='soon';}).length;
+
+  let h=`<div class="hero">
+    <div class="hero-eyebrow">Study Portal</div>
+    <h2>Welcome back, <em>${esc(first)}</em></h2>
+    <p class="hero-sub">Your organised space — textbooks, recordings, live classes and notes.</p>
+    ${liveCount>0?`<div style="margin-top:12px;display:inline-flex;align-items:center;gap:8px;background:rgba(107,158,122,.12);border:1px solid rgba(107,158,122,.28);border-radius:99px;padding:5px 14px;font-size:.76rem;color:var(--sage)"><span style="width:7px;height:7px;border-radius:50%;background:var(--sage);animation:ldot 2s ease infinite;display:inline-block"></span>${liveCount} class${liveCount>1?'es':''} happening now</div>`:''}
   </div>`;
+
+  // Stats
+  h+=`<div class="stats-grid">
+    <div class="stat-card" style="animation-delay:.04s"><div class="stat-val">${mine.length}</div><div class="stat-lbl">My Subjects</div></div>
+    <div class="stat-card" style="animation-delay:.08s"><div class="stat-val">${allSubjects.length}</div><div class="stat-lbl">Total</div></div>
+    <div class="stat-card" style="animation-delay:.12s;cursor:pointer" onclick="setTab('meet')"><div class="stat-val" style="color:${liveCount>0?'var(--sage)':'var(--t2)'}">${liveCount>0?'Live':'—'}</div><div class="stat-lbl">Class Status</div></div>
+  </div>`;
+
+  // Tabs
   h+=`<div class="tabs">
     <button class="tab ${homeTab==='subjects'?'on':''}" onclick="setTab('subjects')">${IC.book} Subjects</button>
-    <button class="tab ${homeTab==='meet'?'on':''}" onclick="setTab('meet')">${IC.video} Join Class</button>
+    <button class="tab ${homeTab==='meet'?'on':''}" onclick="setTab('meet')">${IC.video} Join Class${liveCount>0?` <span style="background:rgba(107,158,122,.2);color:var(--sage);border-radius:99px;padding:0 6px;font-size:.6rem;font-family:var(--mono)">${liveCount} live</span>`:''}</button>
     <button class="tab ${homeTab==='suggest'?'on':''}" onclick="setTab('suggest')">${IC.plus} Suggest File</button>
-    <button class="tab ${homeTab==='contact'?'on':''}" onclick="setTab('contact')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Support
-    </button>
+    <button class="tab ${homeTab==='contact'?'on':''}" onclick="setTab('contact')">${IC.chat} Support</button>
   </div>`;
+
   if(homeTab==='meet'){
     h+=buildAllMeetCards();
-  } else if(homeTab==='contact'){
-    h+=buildContactCard();
-  } else if(homeTab==='suggest'){
-    h+=buildSuggestCard();
-  } else {
-    // Subjects tab
+    h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus</div>`;
+    $('ct').innerHTML=h;
+    startMeetCountdowns();
+    return;
+  }
+  if(homeTab==='contact'){ h+=buildContactCard(); }
+  else if(homeTab==='suggest'){ h+=buildSuggestCard('',''); }
+  else {
+    // SUBJECTS tab
     if(!allSubjects.length){
-      h+=`<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><p>No subjects added yet.</p></div>`;
+      h+=`<div class="empty"><p>No subjects added yet.</p></div>`;
     } else {
-      h+=`<div class="sec-row"><span class="sec-lbl">All Subjects</span><span class="sec-cnt">${allSubjects.length}</span></div><div class="grid">`;
-      allSubjects.forEach((s,i)=>{
-        const has=userSubjects.includes(s.id);
-        h+=`<div class="card ${has?'':'card-locked'}" style="animation-delay:${i*.04}s" onclick="${has?`navToSubject('${s.id}','${esc(s.name).replace(/'/g,"\\'")}')`:''}" >
-          <div class="card-icon" style="${has?'':'background:rgba(255,255,255,.04);border-color:var(--border)'}">${has?IC.book:IC.lock}</div>
-          <div class="card-name">${esc(s.name)}</div>
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-            <span class="chip ${has?'cg':'cd'}">${has?'Access':'No Access'}</span>
-            ${s.code?`<span style="font-size:.57rem;font-family:var(--mono);color:var(--gold);background:var(--goldBG);border-radius:4px;padding:1px 5px">${esc(s.code)}</span>`:''}
-          </div>
-          ${s.description?`<div class="card-sub">${esc(s.description)}</div>`:''}
-          ${!has?`<button class="btn btn-gold" style="font-size:.72rem;padding:6px 10px;margin-top:2px" onclick="reqAccess(event,'${s.id}','${esc(s.name).replace(/'/g,"\\'")}')">Request Access</button>`:''}
-        </div>`;
-      });
-      h+=`</div>`;
+      // Quick access — my subjects first
+      if(mine.length){
+        h+=`<div class="sec-row"><span class="sec-lbl">My Subjects</span><span class="sec-cnt">${mine.length}</span></div>`;
+        h+=`<div class="quick-grid">`;
+        mine.forEach((s,i)=>{
+          const st=effectiveMeetState(liveSubjects[s.id]||s);
+          const liveIndicator=st==='live'?`<span style="position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--sage);animation:ldot 2s ease infinite"></span>`:st==='soon'?`<span style="position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--gold)"></span>`:'';
+          h+=`<div class="quick-card" style="animation-delay:${i*.04}s" onclick="navToSubject('${s.id}','${esc(s.name).replace(/'/g,"\\'")}')">
+            ${liveIndicator}
+            <div class="quick-card-icon">${IC.book}</div>
+            <div class="quick-card-name">${esc(s.name)}</div>
+            <div class="quick-card-sub">${esc(s.code||s.id)}${s.description?` · ${esc(s.description)}`:''}</div>
+          </div>`;
+        });
+        h+=`</div>`;
+      }
+      // Locked subjects
+      const locked=allSubjects.filter(s=>!userSubjects.includes(s.id));
+      if(locked.length){
+        h+=`<div class="sec-row" style="margin-top:4px"><span class="sec-lbl">Other Subjects</span><span class="sec-cnt">${locked.length}</span></div>`;
+        h+=`<div class="grid">`;
+        locked.forEach((s,i)=>{
+          h+=`<div class="card card-locked" style="animation-delay:${i*.04}s">
+            <div class="card-icon" style="background:rgba(255,255,255,.04);border-color:var(--border)">${IC.lock}</div>
+            <div class="card-name">${esc(s.name)}</div>
+            <span class="chip cd">No Access</span>
+            <button class="btn btn-gold" style="font-size:.72rem;padding:6px 10px;margin-top:4px" onclick="reqAccess(event,'${s.id}','${esc(s.name).replace(/'/g,"\\'")}')">Request Access</button>
+          </div>`;
+        });
+        h+=`</div>`;
+      }
     }
   }
-  h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus Study Portal</div>`;
+  h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus</div>`;
   $('ct').innerHTML=h;
-  if(homeTab==='meet') startMeetTimers();
 }
 
-/* ALL MEET CARDS — one per accessible subject that has a meet link */
+/* ── MEET CARDS — fully real-time ── */
 function buildAllMeetCards(){
-  const mine=allSubjects.filter(s=>userSubjects.includes(s.id)&&s.meetLink);
-  if(!mine.length){
-    return `<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg><p>No live classes configured for your subjects yet.</p></div>`;
-  }
-  return mine.map(s=>buildMeetCard(s)).join('');
+  const mine=allSubjects.filter(s=>userSubjects.includes(s.id));
+  if(!mine.length) return`<div class="empty"><p>You have no subjects assigned yet.</p></div>`;
+  const withLink=mine.filter(s=>s.meetLink);
+  if(!withLink.length) return`<div class="empty"><p>No meet links configured yet. Check back later.</p></div>`;
+  return withLink.map(s=>buildOneMeetCard(liveSubjects[s.id]||s)).join('');
 }
-function buildMeetCard(s){
-  const state=getMeetState(s);
+function buildOneMeetCard(s){
+  const st=effectiveMeetState(s);
+  const isSchedTime=isScheduledTime(s)&&st==='inactive';
+  const displaySt=isSchedTime?'waiting':st;
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const nxt=getNextClass(s);
-  const nxtStr=nxt.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})+' · '+nxt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST';
-  let badge='',right='';
-  if(state==='live'){
-    badge=`<div class="ldot"></div><span class="live-lbl">Live Now</span>`;
-    right=`<button class="btn-join" onclick="window.open('${esc(s.meetLink)}','_blank')">${IC.videoW} Join Now</button>`;
-  } else if(state==='soon'){
-    badge=`<div class="ldot"></div><span class="live-lbl">Starting Soon</span>`;
-    right=`<button class="btn-join" onclick="window.open('${esc(s.meetLink)}','_blank')">${IC.videoW} Join Now</button><div class="cd-txt" id="cd-${s.id}"></div>`;
+  const nxtStr=nxt.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})+' at '+nxt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST';
+  // Outer CSS class
+  const outerCls=`meet-outer state-${displaySt}`;
+  // Badges
+  let badges=`<span class="meet-badge badge-gmeet">Google Meet</span>`;
+  if(displaySt==='live')badges+=`<div class="live-dot"></div><span class="meet-badge badge-live">Live Now</span>`;
+  else if(displaySt==='soon')badges+=`<div class="soon-dot"></div><span class="meet-badge badge-soon">Starting Soon</span>`;
+  else if(displaySt==='waiting')badges+=`<span class="meet-badge badge-wait">Waiting for Admin</span>`;
+  // Extra info line
+  let extra='';
+  if(displaySt==='live'&&s.meetAutoEndAt){
+    const endMs=s.meetAutoEndAt.toMillis?s.meetAutoEndAt.toMillis():Number(s.meetAutoEndAt);
+    const rem=Math.max(0,Math.ceil((endMs-Date.now())/60000));
+    extra=`<div class="meet-extra urgent" id="extra-${s.id}">Class ends in ${rem} min</div>`;
+  } else if(displaySt==='soon'&&s.meetStateSetAt){
+    const setMs=s.meetStateSetAt.toMillis?s.meetStateSetAt.toMillis():Number(s.meetStateSetAt);
+    const expMs=setMs+15*60*1000;
+    const rem=Math.max(0,Math.ceil((expMs-Date.now())/60000));
+    extra=`<div class="meet-extra" id="extra-${s.id}">Starts within ${rem} min</div>`;
+  } else if(displaySt==='waiting'){
+    extra=`<div class="meet-extra">Scheduled time reached — admin will start shortly</div>`;
   } else {
-    right=`<button class="btn-join soon" disabled>${IC.videoW} Scheduled</button><div class="cd-txt" id="cd-${s.id}">${nxtStr}</div>`;
+    extra=`<div class="next-chip" id="extra-${s.id}">${IC.clock} Next: ${nxtStr}</div>`;
   }
-  return`<div class="meet-card" style="margin-bottom:14px"><div class="meet-row">
+  // Right button
+  let btnHTML='';
+  if(displaySt==='live'){
+    btnHTML=`<button class="btn-join" onclick="window.open('${esc(s.meetLink)}','_blank')">${IC.videoW} Join Now</button>`;
+  } else if(displaySt==='soon'){
+    btnHTML=`<button class="btn-join soon-btn" onclick="window.open('${esc(s.meetLink)}','_blank')">${IC.videoW} Join Early</button>`;
+  } else if(displaySt==='waiting'){
+    btnHTML=`<button class="btn-join wait-btn" disabled>${IC.videoW} Waiting…</button>`;
+  } else {
+    btnHTML=`<button class="btn-join off-btn" disabled>${IC.videoW} Not Live</button>`;
+  }
+  const schedLabel=s.meetSchedule||`${days[s.meetDay??5]} ${String(s.meetHour??20).padStart(2,'0')}:${String(s.meetMinute??30).padStart(2,'0')} IST`;
+  return `<div class="${outerCls}" id="mc-${s.id}"><div class="meet-row">
     <div class="meet-col"><div class="meet-logo">${IC.videoW}</div></div>
     <div class="meet-body">
-      <div class="meet-top">${badge}<span class="meet-lbl">Google Meet</span></div>
+      <div class="meet-badges">${badges}</div>
       <div class="meet-title">${esc(s.name)}</div>
-      <div class="meet-time">${IC.clock} ${esc(s.meetSchedule||'See schedule')}</div>
+      <div class="meet-sched">${IC.clock} ${esc(schedLabel)}</div>
       ${s.description?`<div class="meet-desc">${esc(s.description)}</div>`:''}
+      ${extra}
     </div>
-    <div class="meet-r">${right}</div>
+    <div class="meet-r">${btnHTML}</div>
   </div></div>`;
 }
-function getMeetState(s){
-  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
-  const day=s.meetDay??5,h=s.meetHour??20,m=s.meetMinute??30;
-  const mins=ist.getHours()*60+ist.getMinutes(),cs=h*60+m;
-  if(ist.getDay()===day&&mins>=cs&&mins<cs+120)return'live';
-  if(ist.getDay()===day&&mins>=cs-15&&mins<cs)return'soon';
-  return'scheduled';
-}
-function getNextClass(s){
-  const day=s.meetDay??5,h=s.meetHour??20,m=s.meetMinute??30;
-  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
-  let d=(day-ist.getDay()+7)%7;
-  if(d===0&&ist.getHours()*60+ist.getMinutes()>=h*60+m+120)d=7;
-  const n=new Date(ist);n.setDate(ist.getDate()+d);n.setHours(h,m,0,0);return n;
-}
-function startMeetTimers(){
-  if(meetTimerId){clearInterval(meetTimerId);meetTimerId=null;}
+
+/* Render just meet cards (called by realtime listener) */
+function renderMeetCards(){
   const mine=allSubjects.filter(s=>userSubjects.includes(s.id)&&s.meetLink);
-  meetTimerId=setInterval(()=>{
-    mine.forEach(s=>{
-      const el=$(`cd-${s.id}`);if(!el)return;
-      const state=getMeetState(s);
-      if(state==='soon'){
-        const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
-        const cs=(s.meetHour??20)*60+(s.meetMinute??30);
-        const rem=(cs-(ist.getHours()*60+ist.getMinutes()))*60-ist.getSeconds();
-        if(rem<=0){clearInterval(meetTimerId);renderContent();return;}
-        el.textContent=`Starts in ${Math.floor(rem/60)}m ${rem%60}s`;
-      } else if(state==='scheduled'){
-        const diff=getNextClass(s)-Date.now();
-        if(diff<=0){clearInterval(meetTimerId);renderContent();return;}
-        const dd=Math.floor(diff/86400000),dh=Math.floor((diff%86400000)/3600000),dm=Math.floor((diff%3600000)/60000);
-        el.textContent=dd>0?`${dd}d ${dh}h away`:`${dh}h ${dm}m away`;
-      }
-    });
-  },1000);
+  mine.forEach(s=>{
+    const el=$(`mc-${s.id}`);
+    if(el){
+      const fresh=liveSubjects[s.id]||s;
+      const newHtml=buildOneMeetCard(fresh);
+      const tmp=document.createElement('div');tmp.innerHTML=newHtml;
+      el.className=tmp.firstChild.className;
+      el.innerHTML=tmp.firstChild.innerHTML;
+    }
+  });
 }
 
-/* FOLDER VIEW */
+/* Countdown ticks for extra info */
+function startMeetCountdowns(){
+  if(cdInterval)clearInterval(cdInterval);
+  cdInterval=setInterval(()=>{
+    const mine=allSubjects.filter(s=>userSubjects.includes(s.id)&&s.meetLink);
+    mine.forEach(s=>{
+      const fresh=liveSubjects[s.id]||s;
+      const st=effectiveMeetState(fresh);
+      const el=$(`extra-${s.id}`);
+      if(!el)return;
+      const now=Date.now();
+      if(st==='live'&&fresh.meetAutoEndAt){
+        const endMs=fresh.meetAutoEndAt.toMillis?fresh.meetAutoEndAt.toMillis():Number(fresh.meetAutoEndAt);
+        const rem=Math.max(0,Math.ceil((endMs-now)/60000));
+        el.textContent=rem>0?`Class ends in ${rem} min`:'Class ending…';
+      } else if(st==='soon'&&fresh.meetStateSetAt){
+        const setMs=fresh.meetStateSetAt.toMillis?fresh.meetStateSetAt.toMillis():Number(fresh.meetStateSetAt);
+        const expMs=setMs+15*60*1000;
+        const rem=Math.max(0,Math.ceil((expMs-now)/60000));
+        el.textContent=rem>0?`Starts within ${rem} min`:'Starting any moment…';
+      }
+    });
+  },30000);
+}
+
+/* ── FOLDER VIEW ── */
 async function renderFolder(cur){
   try{
     const subjectId=path[0].id;
@@ -375,14 +593,12 @@ async function renderFolder(cur){
     items.sort((a,b)=>(a.createdAt?.toMillis?.()||0)-(b.createdAt?.toMillis?.()||0));
     let h=`<div class="ph"><div><div class="ph-t">${esc(cur.name)}</div><div class="ph-s">${items.length} item${items.length!==1?'s':''}</div></div></div>`;
     if(!items.length){
-      h+=`<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><p>Nothing here yet.</p></div>`;
+      h+=`<div class="empty"><p>Nothing here yet.</p></div>`;
     } else {
       h+=`<div class="sec-row"><span class="sec-lbl">Contents</span><span class="sec-cnt">${items.length}</span></div><div class="grid">`;
       items.forEach((it,i)=>{
         const isNav=['folder','chapter'].includes(it.type);
-        const onClick=isNav
-          ?`navigate([...path,{id:'${it.id}',name:'${esc(it.name).replace(/'/g,"\\'")}',type:'${it.type}',subjectId:'${subjectId}'}])`
-          :`openViewer('${(it.url||'').replace(/'/g,"\\'")}','${esc(it.name).replace(/'/g,"\\'")}')`;
+        const onClick=isNav?`navigate([...path,{id:'${it.id}',name:'${esc(it.name).replace(/'/g,"\\'")}',type:'${it.type}',subjectId:'${subjectId}'}])`:`openViewer('${(it.url||'').replace(/'/g,"\\'")}','${esc(it.name).replace(/'/g,"\\'")}')`;
         h+=`<div class="card" style="animation-delay:${i*.04}s" onclick="${onClick}">
           <div class="card-icon">${tIcon(it.type)}</div>
           <div class="card-name">${esc(it.name)}</div>
@@ -393,29 +609,22 @@ async function renderFolder(cur){
       });
       h+=`</div>`;
     }
-    h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus Study Portal</div>`;
+    h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus</div>`;
     $('ct').innerHTML=h;
   }catch(e){$('ct').innerHTML=`<div class="empty"><p>${e.message}</p></div>`;console.error(e);}
 }
 
-/* CHAPTER VIEW */
+/* ── CHAPTER VIEW ── */
 async function renderChapter(chapter){
   try{
     const subjectId=path[0].id;
     const snap=await db.collection('items').where('subjectId','==',subjectId).where('parentId','==',chapter.id).where('status','==','approved').get();
     const ch=[];snap.forEach(d=>ch.push({id:d.id,...d.data()}));
     ch.sort((a,b)=>(a.createdAt?.toMillis?.()||0)-(b.createdAt?.toMillis?.()||0));
-    const tb=ch.filter(c=>c.type==='pdf'),
-          sm=ch.filter(c=>c.type==='studymaterial'),
-          rc=ch.filter(c=>c.type==='recording'),
-          nt=ch.filter(c=>c.type==='note'),
-          lk=ch.filter(c=>c.type==='link');
+    const tb=ch.filter(c=>c.type==='pdf'),sm=ch.filter(c=>c.type==='studymaterial'),rc=ch.filter(c=>c.type==='recording'),nt=ch.filter(c=>c.type==='note'),lk=ch.filter(c=>c.type==='link');
     const pathStr=path.map(p=>p.name).join(' › ');
     let h=`<div class="ch-banner"><div class="ch-path">${esc(pathStr)}</div><div class="ch-title">${esc(chapter.name)}</div><div class="ch-sub">${ch.length} resource${ch.length!==1?'s':''}</div></div>`;
-    // Suggest file button
-    h+=`<div style="display:flex;justify-content:flex-end;margin-bottom:16px">
-      <button class="btn btn-gold" onclick="openSuggestModal('${subjectId}','${chapter.id}')">${IC.plus} Suggest a File</button>
-    </div>`;
+    h+=`<div style="display:flex;justify-content:flex-end;margin-bottom:16px"><button class="btn btn-gold" onclick="openSuggestModal('${subjectId}','${chapter.id}')">${IC.plus} Suggest a File</button></div>`;
     h+=fSection('Textbook PDF',IC.pdf,tb);
     h+=fSection('Study Materials',IC.study,sm);
     if(lk.length)h+=fSection('Links',IC.link,lk);
@@ -423,7 +632,7 @@ async function renderChapter(chapter){
     h+=fSection('Recordings',IC.video,rc);
     h+=`<div class="sdiv"><span class="sdiv-t">Class Notes & Summaries</span></div>`;
     h+=notesSection(nt);
-    h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus Study Portal</div>`;
+    h+=`<div class="credits">Developed by <strong>Aarav Sinha</strong> · Nexus</div>`;
     $('ct').innerHTML=h;
   }catch(e){$('ct').innerHTML=`<div class="empty"><p>${e.message}</p></div>`;console.error(e);}
 }
@@ -463,14 +672,14 @@ function notesSection(items){
   return h+`</div>`;
 }
 
-/* CONTACT */
+/* ── CONTACT ── */
 function buildContactCard(){
   return`<div class="info-card contact">
     <div class="ic-lbl">Support</div>
     <div class="ic-row">
       <div class="ic-txt"><strong>Having issues?</strong> Contact the developer for help with missing materials, technical problems or website issues.</div>
       <div class="ic-acts">
-        <button class="btn-wa" onclick="window.open('https://wa.me/${WA}?text=Hi+Aarav,+I+need+help+with+Nexus.','_blank')">
+        <button class="btn-wa" onclick="window.open('https://wa.me/${WA}?text=Hi+Aarav,+need+help+with+Nexus.','_blank')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/></svg>
           WhatsApp
         </button>
@@ -484,22 +693,17 @@ function buildContactCard(){
   </div>`;
 }
 
-/* SUGGEST CARD */
-function buildSuggestCard(){
-  // Get current subject from path if any
-  const subjectId=path.length?path[0].id:'';
-  const parentId=path.length>1?path[path.length-1].id:'';
+/* ── SUGGEST ── */
+function buildSuggestCard(subjId,parId){
   return`<div class="info-card suggest">
     <div class="ic-lbl">Suggest a File</div>
     <div class="ic-row">
-      <div class="ic-txt">Have a useful resource? <strong>Suggest it to admin</strong> — if approved, it'll appear for everyone in the right chapter.</div>
-      <button class="btn btn-gold" onclick="openSuggestModal('${subjectId}','${parentId}')">${IC.plus} Suggest File</button>
+      <div class="ic-txt">Have a useful resource? <strong>Suggest it to admin</strong> — if approved, it'll appear in the relevant chapter.</div>
+      <button class="btn btn-gold" onclick="openSuggestModal('${subjId}','${parId}')">${IC.plus} Suggest File</button>
     </div>
-    <div style="margin-top:10px;font-size:.71rem;color:var(--t3)">Navigate into a chapter first for the file to be placed correctly.</div>
+    <div style="margin-top:8px;font-size:.7rem;color:var(--t3)">Tip: Navigate into a chapter first to place the file correctly.</div>
   </div>`;
 }
-
-/* SUGGEST MODAL */
 function openSuggestModal(subjectId,parentId){
   $('mo-title').textContent='Suggest a File';
   $('mo-body').innerHTML=`
@@ -507,9 +711,9 @@ function openSuggestModal(subjectId,parentId){
     <div class="fg"><label>File Name *</label><input class="fi" id="sg-n" placeholder="e.g. Chapter 3 Extra Notes" autocomplete="off"/></div>
     <div class="fg"><label>Google Drive Link *</label>
       <input class="fi" id="sg-u" placeholder="https://drive.google.com/file/d/…"/>
-      <span class="fi-hint">Set Drive sharing to "Anyone with the link".</span>
+      <span class="fi-hint">Set Drive sharing to "Anyone with the link". Opens in-app — no redirect.</span>
     </div>
-    <div class="fg"><label>Description <span style="opacity:.45;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label>
+    <div class="fg"><label>Description <span style="opacity:.4;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label>
       <input class="fi" id="sg-d" placeholder="Brief description…" autocomplete="off"/>
     </div>
     <div class="fg"><label>Type</label>
@@ -528,28 +732,18 @@ async function submitSuggestion(subjectId,parentId){
   if(!name){toast('Name required.','err');return;}
   if(!url||!url.includes('drive.google.com')){toast('Please enter a valid Google Drive link.','err');return;}
   try{
-    await db.collection('items').add({
-      name,type,description:desc,
-      url:gdEmbed(url),rawUrl:url,
-      subjectId:subjectId||null,
-      parentId:parentId||null,
-      status:'pending',
-      suggestedBy:CU.email,
-      suggestedByName:UD?.displayName||CU.displayName||CU.email,
-      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
-      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-    });
+    await db.collection('items').add({name,type,description:desc,url:gdEmbed(url),rawUrl:url,subjectId:subjectId||null,parentId:parentId||null,status:'pending',suggestedBy:CU.email,suggestedByName:UD?.displayName||CU.displayName||CU.email,createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
     closeMo();toast('Suggestion submitted. Admin will review it.','ok');
   }catch(e){toast('Error: '+e.message,'err');console.error(e);}
 }
 
-/* REQUEST ACCESS */
+/* ── REQUEST ACCESS ── */
 async function reqAccess(e,subjectId,subjectName){
   e.stopPropagation();
   $('mo-title').textContent='Request Subject Access';
   $('mo-body').innerHTML=`
     <div class="info-box gold">Requesting access to <strong>${esc(subjectName)}</strong>. Admin will review your request.</div>
-    <div class="fg"><label>Message to Admin <span style="opacity:.45;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label>
+    <div class="fg"><label>Message to Admin <span style="opacity:.4;text-transform:none;font-weight:400;letter-spacing:0;font-size:.7rem">(optional)</span></label>
       <textarea class="fta" id="ra-msg" placeholder="Why you need access to this subject…" style="min-height:72px"></textarea>
     </div>
     <div class="mc-ft"><button class="btn btn-ghost" onclick="closeMo()">Cancel</button><button class="btn btn-gold" onclick="sendAccessRequest('${subjectId}','${esc(subjectName).replace(/'/g,"\\'")}')" >Send Request</button></div>`;
@@ -559,13 +753,13 @@ async function sendAccessRequest(subjectId,subjectName){
   const msg=$('ra-msg').value.trim();
   try{
     const ex=await db.collection('accessRequests').where('userId','==',CU.uid).where('subjectId','==',subjectId).where('status','==','pending').get();
-    if(!ex.empty){toast('You already have a pending request for this subject.','err');return;}
+    if(!ex.empty){toast('Already have a pending request for this subject.','err');return;}
     await db.collection('accessRequests').add({userId:CU.uid,userEmail:CU.email,userName:UD?.displayName||CU.displayName||CU.email,subjectId,subjectName,message:msg,status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
     closeMo();toast('Request sent. Admin will review it.','ok');
   }catch(e){toast('Error: '+e.message,'err');console.error(e);}
 }
 
-/* ACCOUNT MODAL */
+/* ── ACCOUNT MODAL ── */
 function openAcctModal(){
   const name=UD?.displayName||CU?.displayName||'',photo=UD?.photoURL||CU?.photoURL||'',role=UD?.role||'student';
   const subjects=(UD?.subjects||[]).map(id=>{const s=allSubjects.find(x=>x.id===id);return s?s.name:id;}).join(', ')||'—';
@@ -606,20 +800,20 @@ async function saveProfile(){
   }catch(e){toast('Error: '+e.message,'err');}
 }
 
-/* VIEWER */
-function openViewer(url,name){if(!url){toast('No URL for this file.','err');return;}$('vt').textContent=name;$('vf').src=gdEmbed(url);$('viewer').style.display='flex';}
+/* ── VIEWER ── */
+function openViewer(url,name){if(!url){toast('No URL.','err');return;}$('vt').textContent=name;$('vf').src=gdEmbed(url);$('viewer').style.display='flex';}
 function closeViewer(){$('viewer').style.display='none';$('vf').src='';}
 
-/* MODAL */
+/* ── MODAL ── */
 function openMo(){$('modal').style.display='flex';}
 function closeMo(){$('modal').style.display='none';}
 $('modal').addEventListener('click',e=>{if(e.target===$('modal'))closeMo();});
 
-/* MOBILE */
+/* ── MOBILE ── */
 $('tb-ham').addEventListener('click',()=>$('sb').classList.toggle('open'));
 $('sb-x').addEventListener('click',()=>$('sb').classList.remove('open'));
 
-/* GLOBALS */
+/* ── GLOBALS ── */
 window.navigate=navigate;window.goHome=goHome;window.goBack=goBack;window.navToSubject=navToSubject;
 window.setTab=setTab;window.openViewer=openViewer;window.closeViewer=closeViewer;
 window.openMo=openMo;window.closeMo=closeMo;window.openAcctModal=openAcctModal;window.openEditProfile=openEditProfile;window.saveProfile=saveProfile;
